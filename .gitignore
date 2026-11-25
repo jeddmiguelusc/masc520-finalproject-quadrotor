@@ -1,0 +1,32 @@
+# --- Dataset: never committed (no license to re-host; see data/README.md) ---
+data/raw/*
+!data/raw/.gitkeep
+*.zip
+*.zip.part
+*.tar.xz
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# --- Environments ---
+.venv/
+venv/
+env/
+.env
+
+# --- Model weights / caches (results/*.json, runs.csv and figures ARE committed) ---
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+cache/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
