@@ -4,4 +4,4 @@ One entry per checkpoint, written by the author. Format: what was decided, why, 
 
 ## CP0 — Setup (2026-11-24)
 
-- 
+- "Data from NeuroBEM server is accessable and accesses and skips raw data and goes through flights, readme, and testset. Raw data not committed to the repo because the zip is too big for Github's limits."
