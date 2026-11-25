@@ -1,0 +1,6 @@
+# M2 on Split B_s (speed extrapolation): P0b prior + MLP residual, prior and normalisers fitted on the
+# slow (|v| <= 5 m/s) training samples only. Same hyperparameters as m2_hybrid_mlp.yaml.
+name: m2_hybrid_mlp_Bs
+model: {type: mlp, prior: true, hidden: [128, 128, 64], nll: false}
+data: {source: neurobem, split: B_s, max_window: 20}
+train: {batch_size: 1024, lr: 1.0e-3, max_epochs: 100, patience: 8, max_hours: 8}

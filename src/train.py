@@ -100,8 +100,9 @@ def set_seed(seed: int) -> None:
 def load_split(dcfg: dict, part: str):
     """List of (X, Y) segments for one part ('train' or 'val') of a split.
 
-    NeuroBEM: data/splits.json (written in CP2) maps split keys to segment-id lists:
-        {"A": {"train": [...], "val": [...], "test": [...]}, "A_r1": {...}, ..., "B": {...}}
+    NeuroBEM: data/splits.json (scripts/make_splits.py) maps split keys to segment-id lists:
+        {"A": {"train": [...], "val": [...], "test": [...]}, "A_r1".."A_r3", "B", "B_s"}
+    Each segment is contact-trimmed into pieces (windows never cross a cut).
     data.resample = k > 0 selects key "A_rk".
     """
     if part not in ("train", "val"):
@@ -113,19 +114,11 @@ def load_split(dcfg: dict, part: str):
         n_val = max(1, n // 5)
         return segs[n_val:] if part == "train" else segs[:n_val]
     if dcfg["source"] == "neurobem":
-        from src.data.features import segment_arrays
-        from src.data.load import load_all
+        # contact-trimmed pieces + any split sample filter (src/data/dataset.py, CP2)
+        from src.data.dataset import load_part, read_splits
         splits_path = REPO / dcfg.get("splits_file", "data/splits.json")
-        if not splits_path.exists():
-            raise FileNotFoundError(f"{splits_path} missing - it is created in CP2")
-        splits = json.loads(splits_path.read_text())
         key = dcfg["split"] if dcfg.get("resample") in (None, 0) else f"{dcfg['split']}_r{dcfg['resample']}"
-        ids = set(splits[key][part])
-        df = load_all()                                   # cached full frame; filtered straight away
-        df = df[df["segment_id"].astype(str).isin(ids)]
-        if df["segment_id"].nunique() != len(ids):
-            raise ValueError(f"{key}/{part}: {len(ids) - df['segment_id'].nunique()} segment ids not found")
-        return [(X, Y) for _, X, Y in segment_arrays(df)]
+        return [(X, Y) for _, X, Y in load_part(key, part, read_splits(splits_path))]
     raise ValueError(f"unknown data.source {dcfg['source']!r}")
 
 

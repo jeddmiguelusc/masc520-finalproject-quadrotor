@@ -40,6 +40,8 @@ class ForceModel(nn.Module):
             resid = Y_last - self.prior(torch.from_numpy(X_last)).numpy()
         else:
             resid = Y_last
+        # statistics in float64: float32 sums over ~1.3M rows drift (vbat mean was off by 0.4)
+        X_rows = np.asarray(X_rows, np.float64); resid = np.asarray(resid, np.float64)
         self.x_mean.copy_(torch.from_numpy(X_rows.mean(0).astype(np.float32)))
         self.x_std.copy_(torch.from_numpy(np.maximum(X_rows.std(0), 1e-6).astype(np.float32)))
         self.out_mean.copy_(torch.from_numpy(resid.mean(0).astype(np.float32)))

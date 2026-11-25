@@ -6,8 +6,8 @@ Targets (6, body frame):
     F = m * acc                      (acc is specific force - CP1 test 2)
     M = J * ang_acc + ang_vel x (J * ang_vel)   (rigid-body Euler equation)
 
-PROVISIONAL until the CP2 target tests pass (tests/test_targets.py). The model and training
-code only rely on the shapes and on FEATURES / TARGETS order.
+Targets are defined in src/data/targets.py (checked by tests/test_targets.py). Split-aware
+loading with contact trimming is src/data/dataset.py.
 """
 from __future__ import annotations
 
@@ -36,13 +36,9 @@ def build_features(df: pd.DataFrame) -> np.ndarray:
 
 
 def build_targets(df: pd.DataFrame) -> np.ndarray:
-    from src.data import frames as F
-    force = F.MASS * F.specific_force_body(df)
-    w = F.vec(df, "ang_vel")
-    dw = F.vec(df, "ang_acc")
-    Jw = w @ F.INERTIA.T
-    moment = dw @ F.INERTIA.T + np.cross(w, Jw)
-    return np.concatenate([force, moment], axis=1).astype(np.float32)
+    """Body-frame force and torque; the definition lives in src/data/targets.py."""
+    from src.data.targets import build_targets as _bt
+    return _bt(df)
 
 
 def segment_arrays(df: pd.DataFrame) -> list[tuple[str, np.ndarray, np.ndarray]]:

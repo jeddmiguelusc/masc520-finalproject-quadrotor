@@ -1,0 +1,582 @@
+{
+ "source": "scripts/make_splits.py",
+ "splits_sha256": "daef68cefa78479e",
+ "excluded_flights": {
+  "2021-02-18-16-43-54": "median dt 6.10 ms (not 400 Hz): a 20-sample window would span 122 ms"
+ },
+ "n_flights_used": 94,
+ "n_samples_used": 1792120,
+ "splits": {
+  "A": {
+   "train": {
+    "n_flights": 66,
+    "n_segments": 165,
+    "n_pieces": 169,
+    "n_samples_raw": 1289325,
+    "n_contact_samples_cut": 187,
+    "n_samples_kept": 1289138,
+    "n_windows": 1285962,
+    "minutes_kept": 53.71,
+    "flight_max_speed_min_max": [
+     1.99,
+     17.7
+    ],
+    "sample_speed_p50_p99_max": [
+     3.16,
+     13.78,
+     17.7
+    ],
+    "trajectory_types": {
+     "3d_circle": 12,
+     "battery_test_circle": 7,
+     "circle": 2,
+     "cpc": 6,
+     "ellipse": 1,
+     "lemniscate": 14,
+     "linear_oscillation": 7,
+     "random_points": 7,
+     "satellite": 6,
+     "vertical_oscillation": 1,
+     "wobbly_circle": 3
+    },
+    "n_server_testset_segments": 9,
+    "pct_samples_of_split": 72.0
+   },
+   "val": {
+    "n_flights": 18,
+    "n_segments": 50,
+    "n_pieces": 50,
+    "n_samples_raw": 338408,
+    "n_contact_samples_cut": 26,
+    "n_samples_kept": 338382,
+    "n_windows": 337432,
+    "minutes_kept": 14.1,
+    "flight_max_speed_min_max": [
+     2.65,
+     16.57
+    ],
+    "sample_speed_p50_p99_max": [
+     2.97,
+     13.92,
+     16.57
+    ],
+    "trajectory_types": {
+     "3d_circle": 4,
+     "battery_test_circle": 1,
+     "circle": 1,
+     "cpc": 2,
+     "lemniscate": 4,
+     "linear_oscillation": 2,
+     "random_points": 2,
+     "satellite": 1,
+     "vertical_oscillation": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 18.9
+   },
+   "test": {
+    "n_flights": 10,
+    "n_segments": 28,
+    "n_pieces": 30,
+    "n_samples_raw": 164387,
+    "n_contact_samples_cut": 276,
+    "n_samples_kept": 164111,
+    "n_windows": 163549,
+    "minutes_kept": 6.84,
+    "flight_max_speed_min_max": [
+     6.22,
+     17.72
+    ],
+    "sample_speed_p50_p99_max": [
+     3.07,
+     13.91,
+     17.72
+    ],
+    "trajectory_types": {
+     "3d_circle": 2,
+     "circle": 1,
+     "cpc": 1,
+     "lemniscate": 3,
+     "random_points": 1,
+     "satellite": 1,
+     "wobbly_circle": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 9.2
+   }
+  },
+  "A_r1": {
+   "train": {
+    "n_flights": 65,
+    "n_segments": 165,
+    "n_pieces": 168,
+    "n_samples_raw": 1233480,
+    "n_contact_samples_cut": 187,
+    "n_samples_kept": 1233293,
+    "n_windows": 1230124,
+    "minutes_kept": 51.39,
+    "flight_max_speed_min_max": [
+     1.99,
+     17.7
+    ],
+    "sample_speed_p50_p99_max": [
+     3.06,
+     13.53,
+     17.7
+    ],
+    "trajectory_types": {
+     "3d_circle": 12,
+     "battery_test_circle": 8,
+     "circle": 1,
+     "cpc": 7,
+     "lemniscate": 14,
+     "linear_oscillation": 7,
+     "random_points": 7,
+     "satellite": 5,
+     "vertical_oscillation": 2,
+     "wobbly_circle": 2
+    },
+    "n_server_testset_segments": 8,
+    "pct_samples_of_split": 68.8
+   },
+   "val": {
+    "n_flights": 19,
+    "n_segments": 50,
+    "n_pieces": 51,
+    "n_samples_raw": 394253,
+    "n_contact_samples_cut": 26,
+    "n_samples_kept": 394227,
+    "n_windows": 393270,
+    "minutes_kept": 16.43,
+    "flight_max_speed_min_max": [
+     3.82,
+     16.54
+    ],
+    "sample_speed_p50_p99_max": [
+     3.39,
+     14.89,
+     16.54
+    ],
+    "trajectory_types": {
+     "3d_circle": 4,
+     "circle": 2,
+     "cpc": 1,
+     "ellipse": 1,
+     "lemniscate": 4,
+     "linear_oscillation": 2,
+     "random_points": 2,
+     "satellite": 2,
+     "wobbly_circle": 1
+    },
+    "n_server_testset_segments": 3,
+    "pct_samples_of_split": 22.0
+   },
+   "test": {
+    "n_flights": 10,
+    "n_segments": 28,
+    "n_pieces": 30,
+    "n_samples_raw": 164387,
+    "n_contact_samples_cut": 276,
+    "n_samples_kept": 164111,
+    "n_windows": 163549,
+    "minutes_kept": 6.84,
+    "flight_max_speed_min_max": [
+     6.22,
+     17.72
+    ],
+    "sample_speed_p50_p99_max": [
+     3.07,
+     13.91,
+     17.72
+    ],
+    "trajectory_types": {
+     "3d_circle": 2,
+     "circle": 1,
+     "cpc": 1,
+     "lemniscate": 3,
+     "random_points": 1,
+     "satellite": 1,
+     "wobbly_circle": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 9.2
+   }
+  },
+  "A_r2": {
+   "train": {
+    "n_flights": 65,
+    "n_segments": 170,
+    "n_pieces": 173,
+    "n_samples_raw": 1265250,
+    "n_contact_samples_cut": 184,
+    "n_samples_kept": 1265066,
+    "n_windows": 1261809,
+    "minutes_kept": 52.71,
+    "flight_max_speed_min_max": [
+     2.65,
+     17.7
+    ],
+    "sample_speed_p50_p99_max": [
+     3.14,
+     14.17,
+     17.7
+    ],
+    "trajectory_types": {
+     "3d_circle": 14,
+     "battery_test_circle": 4,
+     "circle": 3,
+     "cpc": 6,
+     "ellipse": 1,
+     "lemniscate": 14,
+     "linear_oscillation": 7,
+     "random_points": 7,
+     "satellite": 5,
+     "vertical_oscillation": 2,
+     "wobbly_circle": 2
+    },
+    "n_server_testset_segments": 9,
+    "pct_samples_of_split": 70.6
+   },
+   "val": {
+    "n_flights": 19,
+    "n_segments": 45,
+    "n_pieces": 46,
+    "n_samples_raw": 362483,
+    "n_contact_samples_cut": 29,
+    "n_samples_kept": 362454,
+    "n_windows": 361585,
+    "minutes_kept": 15.1,
+    "flight_max_speed_min_max": [
+     1.99,
+     14.26
+    ],
+    "sample_speed_p50_p99_max": [
+     3.05,
+     12.94,
+     14.26
+    ],
+    "trajectory_types": {
+     "3d_circle": 2,
+     "battery_test_circle": 4,
+     "cpc": 2,
+     "lemniscate": 4,
+     "linear_oscillation": 2,
+     "random_points": 2,
+     "satellite": 2,
+     "wobbly_circle": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 20.2
+   },
+   "test": {
+    "n_flights": 10,
+    "n_segments": 28,
+    "n_pieces": 30,
+    "n_samples_raw": 164387,
+    "n_contact_samples_cut": 276,
+    "n_samples_kept": 164111,
+    "n_windows": 163549,
+    "minutes_kept": 6.84,
+    "flight_max_speed_min_max": [
+     6.22,
+     17.72
+    ],
+    "sample_speed_p50_p99_max": [
+     3.07,
+     13.91,
+     17.72
+    ],
+    "trajectory_types": {
+     "3d_circle": 2,
+     "circle": 1,
+     "cpc": 1,
+     "lemniscate": 3,
+     "random_points": 1,
+     "satellite": 1,
+     "wobbly_circle": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 9.2
+   }
+  },
+  "A_r3": {
+   "train": {
+    "n_flights": 66,
+    "n_segments": 170,
+    "n_pieces": 173,
+    "n_samples_raw": 1277328,
+    "n_contact_samples_cut": 97,
+    "n_samples_kept": 1277231,
+    "n_windows": 1273979,
+    "minutes_kept": 53.22,
+    "flight_max_speed_min_max": [
+     1.99,
+     17.7
+    ],
+    "sample_speed_p50_p99_max": [
+     3.07,
+     13.82,
+     17.7
+    ],
+    "trajectory_types": {
+     "3d_circle": 12,
+     "battery_test_circle": 6,
+     "circle": 3,
+     "cpc": 6,
+     "ellipse": 1,
+     "lemniscate": 14,
+     "linear_oscillation": 7,
+     "random_points": 7,
+     "satellite": 5,
+     "vertical_oscillation": 2,
+     "wobbly_circle": 3
+    },
+    "n_server_testset_segments": 8,
+    "pct_samples_of_split": 71.3
+   },
+   "val": {
+    "n_flights": 18,
+    "n_segments": 45,
+    "n_pieces": 46,
+    "n_samples_raw": 350405,
+    "n_contact_samples_cut": 116,
+    "n_samples_kept": 350289,
+    "n_windows": 349415,
+    "minutes_kept": 14.6,
+    "flight_max_speed_min_max": [
+     8.82,
+     15.92
+    ],
+    "sample_speed_p50_p99_max": [
+     3.43,
+     13.76,
+     15.92
+    ],
+    "trajectory_types": {
+     "3d_circle": 4,
+     "battery_test_circle": 2,
+     "cpc": 2,
+     "lemniscate": 4,
+     "linear_oscillation": 2,
+     "random_points": 2,
+     "satellite": 2
+    },
+    "n_server_testset_segments": 3,
+    "pct_samples_of_split": 19.6
+   },
+   "test": {
+    "n_flights": 10,
+    "n_segments": 28,
+    "n_pieces": 30,
+    "n_samples_raw": 164387,
+    "n_contact_samples_cut": 276,
+    "n_samples_kept": 164111,
+    "n_windows": 163549,
+    "minutes_kept": 6.84,
+    "flight_max_speed_min_max": [
+     6.22,
+     17.72
+    ],
+    "sample_speed_p50_p99_max": [
+     3.07,
+     13.91,
+     17.72
+    ],
+    "trajectory_types": {
+     "3d_circle": 2,
+     "circle": 1,
+     "cpc": 1,
+     "lemniscate": 3,
+     "random_points": 1,
+     "satellite": 1,
+     "wobbly_circle": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 9.2
+   }
+  },
+  "B": {
+   "train": {
+    "n_flights": 5,
+    "n_segments": 16,
+    "n_pieces": 17,
+    "n_samples_raw": 80428,
+    "n_contact_samples_cut": 30,
+    "n_samples_kept": 80398,
+    "n_windows": 80080,
+    "minutes_kept": 3.35,
+    "flight_max_speed_min_max": [
+     1.99,
+     3.82
+    ],
+    "sample_speed_p50_p99_max": [
+     1.2,
+     3.44,
+     3.82
+    ],
+    "trajectory_types": {
+     "lemniscate": 2,
+     "vertical_oscillation": 1,
+     "wobbly_circle": 2
+    },
+    "n_server_testset_segments": 1,
+    "pct_samples_of_split": 4.5
+   },
+   "val": {
+    "n_flights": 1,
+    "n_segments": 3,
+    "n_pieces": 3,
+    "n_samples_raw": 15783,
+    "n_contact_samples_cut": 0,
+    "n_samples_kept": 15783,
+    "n_windows": 15726,
+    "minutes_kept": 0.66,
+    "flight_max_speed_min_max": [
+     4.01,
+     4.01
+    ],
+    "sample_speed_p50_p99_max": [
+     1.13,
+     3.79,
+     4.01
+    ],
+    "trajectory_types": {
+     "vertical_oscillation": 1
+    },
+    "n_server_testset_segments": 0,
+    "pct_samples_of_split": 0.9
+   },
+   "test": {
+    "n_flights": 88,
+    "n_segments": 224,
+    "n_pieces": 229,
+    "n_samples_raw": 1695909,
+    "n_contact_samples_cut": 459,
+    "n_samples_kept": 1695450,
+    "n_windows": 1691137,
+    "minutes_kept": 70.64,
+    "flight_max_speed_min_max": [
+     6.22,
+     17.72
+    ],
+    "sample_speed_p50_p99_max": [
+     3.42,
+     13.89,
+     17.72
+    ],
+    "trajectory_types": {
+     "3d_circle": 18,
+     "battery_test_circle": 8,
+     "circle": 4,
+     "cpc": 9,
+     "ellipse": 1,
+     "lemniscate": 19,
+     "linear_oscillation": 9,
+     "random_points": 10,
+     "satellite": 8,
+     "wobbly_circle": 2
+    },
+    "n_server_testset_segments": 12,
+    "pct_samples_of_split": 94.6
+   }
+  },
+  "B_s": {
+   "train": {
+    "n_flights": 66,
+    "n_segments": 165,
+    "n_pieces": 652,
+    "n_samples_raw": 1289325,
+    "n_contact_samples_cut": 187,
+    "n_samples_kept": 803122,
+    "n_windows": 790773,
+    "minutes_kept": 33.46,
+    "flight_max_speed_min_max": [
+     1.99,
+     17.7
+    ],
+    "sample_speed_p50_p99_max": [
+     1.32,
+     4.89,
+     5.0
+    ],
+    "trajectory_types": {
+     "3d_circle": 12,
+     "battery_test_circle": 7,
+     "circle": 2,
+     "cpc": 6,
+     "ellipse": 1,
+     "lemniscate": 14,
+     "linear_oscillation": 7,
+     "random_points": 7,
+     "satellite": 6,
+     "vertical_oscillation": 1,
+     "wobbly_circle": 3
+    },
+    "n_server_testset_segments": 9,
+    "pct_samples_of_split": 68.1
+   },
+   "val": {
+    "n_flights": 18,
+    "n_segments": 50,
+    "n_pieces": 161,
+    "n_samples_raw": 338408,
+    "n_contact_samples_cut": 26,
+    "n_samples_kept": 212167,
+    "n_windows": 209108,
+    "minutes_kept": 8.84,
+    "flight_max_speed_min_max": [
+     2.65,
+     16.57
+    ],
+    "sample_speed_p50_p99_max": [
+     1.06,
+     4.87,
+     5.0
+    ],
+    "trajectory_types": {
+     "3d_circle": 4,
+     "battery_test_circle": 1,
+     "circle": 1,
+     "cpc": 2,
+     "lemniscate": 4,
+     "linear_oscillation": 2,
+     "random_points": 2,
+     "satellite": 1,
+     "vertical_oscillation": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 18.0
+   },
+   "test": {
+    "n_flights": 10,
+    "n_segments": 28,
+    "n_pieces": 30,
+    "n_samples_raw": 164387,
+    "n_contact_samples_cut": 276,
+    "n_samples_kept": 164111,
+    "n_windows": 163549,
+    "minutes_kept": 6.84,
+    "flight_max_speed_min_max": [
+     6.22,
+     17.72
+    ],
+    "sample_speed_p50_p99_max": [
+     3.07,
+     13.91,
+     17.72
+    ],
+    "trajectory_types": {
+     "3d_circle": 2,
+     "circle": 1,
+     "cpc": 1,
+     "lemniscate": 3,
+     "random_points": 1,
+     "satellite": 1,
+     "wobbly_circle": 1
+    },
+    "n_server_testset_segments": 2,
+    "pct_samples_of_split": 13.9
+   }
+  }
+ }
+}
