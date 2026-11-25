@@ -160,3 +160,14 @@ def test_ensemble_mixture_variance():
     assert out["mean"].item() == 1.0
     assert out["epistemic"].item() == 1.0 and out["aleatoric"].item() == 1.0
     assert out["var"].item() == 2.0
+
+
+@pytest.mark.skipif(not (getattr(torch.backends, "mps", None) and torch.backends.mps.is_available()),
+                    reason="MPS not available")
+@pytest.mark.parametrize("name", [k for k in CONFIGS if k not in ("p0a", "p0b")])
+def test_two_epochs_on_mps(tmp_path, name):
+    """The real runs use MPS (no float64): train + evaluate must work there, not only on CPU."""
+    cfg = _cfg(tmp_path, CONFIGS[name], device="mps")
+    out = run(cfg, verbose=False)
+    assert out["row"]["device"] == "mps" and out["row"]["epochs_run"] == 2
+    assert np.isfinite(out["final"]["rmse_F"])

@@ -130,7 +130,7 @@ def evaluate(model, data: WindowedData, batch_size: int) -> dict:
     for xb, yb in data.batches(batch_size, data.max_window):
         tot += model.loss(xb, yb).item() * len(xb)
         mean, _ = model(xb)
-        se += ((mean - yb) ** 2).double().sum(0).cpu()
+        se += ((mean - yb) ** 2).cpu().double().sum(0)   # to CPU first: MPS has no float64
         n += len(xb)
     mse = se / n
     return {"loss": tot / n,
