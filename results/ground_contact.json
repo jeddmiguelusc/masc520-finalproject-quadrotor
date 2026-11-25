@@ -1,0 +1,218 @@
+{
+  "k_used": 1.5071346607168943e-06,
+  "n_samples": 1798481,
+  "rules": {
+    "motor_rule_min_lt_500": {
+      "n": 3997,
+      "pct_of_all": 0.2222431040416885,
+      "n_segments": 31,
+      "n_in_server_testset_segments": 338,
+      "n_with_speed_gt_1": 3481,
+      "speed_pctl_10_50_90": [
+        0.326,
+        6.532,
+        14.455
+      ],
+      "thrust_resid_median_N_nontest": 0.47649624289737424
+    },
+    "contact_rule": {
+      "n": 489,
+      "pct_of_all": 0.027189611677854813,
+      "n_segments": 17,
+      "n_in_server_testset_segments": 28,
+      "n_with_speed_gt_1": 0,
+      "speed_pctl_10_50_90": [
+        0.0,
+        0.001,
+        0.224
+      ],
+      "thrust_resid_median_N_nontest": 6.929397333379048
+    }
+  },
+  "thrust_resid_median_N_all_other_nontest": 0.07851626692660574,
+  "contact_runs": [
+    {
+      "segment_id": "2021-02-03-13-43-38_seg_4",
+      "start": 1941,
+      "length": 5,
+      "seg_len": 1946,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 4.234644639476751,
+      "pos_z_minus_seg_min_m": 0.0004453136040634964
+    },
+    {
+      "segment_id": "2021-02-03-17-37-27_seg_3",
+      "start": 14700,
+      "length": 2,
+      "seg_len": 14702,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 4.00492362895208,
+      "pos_z_minus_seg_min_m": 0.00013988677411586048
+    },
+    {
+      "segment_id": "2021-02-05-14-19-34_seg_3",
+      "start": 1866,
+      "length": 11,
+      "seg_len": 1877,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 3.6674764216084057,
+      "pos_z_minus_seg_min_m": 0.002159108635384488
+    },
+    {
+      "segment_id": "2021-02-05-16-14-20_seg_1",
+      "start": 0,
+      "length": 93,
+      "seg_len": 2517,
+      "at_start": true,
+      "at_end": false,
+      "median_resid_N": 6.9575155080838735,
+      "pos_z_minus_seg_min_m": 4.561117476881149e-05
+    },
+    {
+      "segment_id": "2021-02-05-16-29-21_seg_4",
+      "start": 1794,
+      "length": 7,
+      "seg_len": 1820,
+      "at_start": false,
+      "at_end": false,
+      "median_resid_N": -0.7380038825471242,
+      "pos_z_minus_seg_min_m": 0.024774743602480304
+    },
+    {
+      "segment_id": "2021-02-18-16-08-00_seg_4",
+      "start": 3125,
+      "length": 5,
+      "seg_len": 3130,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 3.276653888388551,
+      "pos_z_minus_seg_min_m": 0.0006654168929056958
+    },
+    {
+      "segment_id": "2021-02-18-16-41-41_seg_2",
+      "start": 1766,
+      "length": 15,
+      "seg_len": 1781,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 3.8879456652537097,
+      "pos_z_minus_seg_min_m": 0.004127194368067411
+    },
+    {
+      "segment_id": "2021-02-18-17-03-20_seg_2",
+      "start": 14289,
+      "length": 16,
+      "seg_len": 14306,
+      "at_start": false,
+      "at_end": false,
+      "median_resid_N": 3.289434187571836,
+      "pos_z_minus_seg_min_m": 0.005826498773142452
+    },
+    {
+      "segment_id": "2021-02-18-17-47-42_seg_1",
+      "start": 18134,
+      "length": 7,
+      "seg_len": 18141,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 3.7962008091618245,
+      "pos_z_minus_seg_min_m": 0.0010566948794105968
+    },
+    {
+      "segment_id": "2021-02-23-10-48-03_seg_3",
+      "start": 1627,
+      "length": 14,
+      "seg_len": 1655,
+      "at_start": false,
+      "at_end": false,
+      "median_resid_N": 1.7693379290080546,
+      "pos_z_minus_seg_min_m": 0.018601795201838273
+    },
+    {
+      "segment_id": "2021-02-23-14-21-48_seg_3",
+      "start": 14765,
+      "length": 12,
+      "seg_len": 14784,
+      "at_start": false,
+      "at_end": false,
+      "median_resid_N": 2.4962623026207655,
+      "pos_z_minus_seg_min_m": 0.009778662610099798
+    },
+    {
+      "segment_id": "2021-02-23-14-29-48_seg_2",
+      "start": 10882,
+      "length": 8,
+      "seg_len": 10890,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 3.6052165436977384,
+      "pos_z_minus_seg_min_m": 0.0013433535310357902
+    },
+    {
+      "segment_id": "2021-02-23-17-27-24_seg_1",
+      "start": 0,
+      "length": 258,
+      "seg_len": 3166,
+      "at_start": true,
+      "at_end": false,
+      "median_resid_N": 6.932844799515524,
+      "pos_z_minus_seg_min_m": 7.014594885310088e-05
+    },
+    {
+      "segment_id": "2021-02-23-17-27-24_seg_3",
+      "start": 1741,
+      "length": 6,
+      "seg_len": 1771,
+      "at_start": false,
+      "at_end": false,
+      "median_resid_N": 0.18192557928072017,
+      "pos_z_minus_seg_min_m": 0.035051191990976296
+    },
+    {
+      "segment_id": "2021-02-23-17-45-47_seg_3",
+      "start": 1982,
+      "length": 12,
+      "seg_len": 2005,
+      "at_start": false,
+      "at_end": false,
+      "median_resid_N": 2.7577333183038966,
+      "pos_z_minus_seg_min_m": 0.0134288833016592
+    },
+    {
+      "segment_id": "2021-02-23-19-33-29_seg_3",
+      "start": 2370,
+      "length": 2,
+      "seg_len": 2372,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 3.346995830264058,
+      "pos_z_minus_seg_min_m": 0.00026767561477894497
+    },
+    {
+      "segment_id": "2021-02-23-21-57-38_seg_3",
+      "start": 2703,
+      "length": 16,
+      "seg_len": 2719,
+      "at_start": false,
+      "at_end": true,
+      "median_resid_N": 2.888040338629972,
+      "pos_z_minus_seg_min_m": 0.004474462581046057
+    }
+  ],
+  "contact_runs_summary": {
+    "n_runs": 17,
+    "at_segment_start": 2,
+    "at_segment_end": 9,
+    "mid_segment": 6,
+    "runs_ge_20_samples": 2
+  },
+  "error_budget_nontest": {
+    "contact_sq_resid_sum": 17751.773880515142,
+    "n_nontest": 1582652,
+    "rmse_added_alone_N": 0.10590785281052376,
+    "example_rmse_0p335_becomes_N": 0.3513423875465862
+  }
+}
