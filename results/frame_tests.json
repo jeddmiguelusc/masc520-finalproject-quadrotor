@@ -1,0 +1,167 @@
+{
+  "mapping": {
+    "n_segment_csvs": 247,
+    "n_flights_in_flights_txt": 95,
+    "n_flights_with_segments": 95,
+    "n_server_testset_segments": 13,
+    "server_testset_ids_missing": [],
+    "trajectory_type_counts": {
+      "lemniscate": 21,
+      "3d_circle": 18,
+      "linear_oscillation": 10,
+      "random_points": 10,
+      "cpc": 9,
+      "battery_test_circle": 8,
+      "satellite": 8,
+      "wobbly_circle": 4,
+      "circle": 4,
+      "vertical_oscillation": 2,
+      "ellipse": 1
+    }
+  },
+  "sample": {
+    "rule": "every 4th non-testset segment (sorted by flight, seg)",
+    "n_segments": 59,
+    "segment_ids": [
+      "2021-02-03-13-43-38_seg_1",
+      "2021-02-03-13-44-49_seg_1",
+      "2021-02-03-13-53-04_seg_1",
+      "2021-02-03-13-54-06_seg_3",
+      "2021-02-03-16-10-37_seg_3",
+      "2021-02-03-16-12-22_seg_3",
+      "2021-02-03-16-47-27_seg_1",
+      "2021-02-03-16-54-28_seg_3",
+      "2021-02-03-16-55-55_seg_3",
+      "2021-02-03-17-04-15_seg_2",
+      "2021-02-03-17-14-47_seg_1",
+      "2021-02-03-17-33-11_seg_1",
+      "2021-02-03-17-37-27_seg_3",
+      "2021-02-05-14-01-47_seg_2",
+      "2021-02-05-14-02-47_seg_3",
+      "2021-02-05-14-03-41_seg_4",
+      "2021-02-05-14-19-34_seg_2",
+      "2021-02-05-14-24-35_seg_3",
+      "2021-02-05-15-40-15_seg_1",
+      "2021-02-05-15-46-49_seg_3",
+      "2021-02-05-15-58-59_seg_1",
+      "2021-02-05-16-06-45_seg_2",
+      "2021-02-05-16-10-53_seg_2",
+      "2021-02-05-16-16-00_seg_2",
+      "2021-02-05-16-29-21_seg_1",
+      "2021-02-05-16-31-14_seg_1",
+      "2021-02-05-16-33-13_seg_1",
+      "2021-02-18-14-15-53_seg_1",
+      "2021-02-18-15-47-24_seg_3",
+      "2021-02-18-16-08-00_seg_4",
+      "2021-02-18-16-41-41_seg_1",
+      "2021-02-18-16-43-54_seg_3",
+      "2021-02-18-16-47-02_seg_3",
+      "2021-02-18-16-55-00_seg_1",
+      "2021-02-18-17-05-14_seg_2",
+      "2021-02-18-17-09-50_seg_1",
+      "2021-02-18-17-28-35_seg_1",
+      "2021-02-18-17-42-11_seg_3",
+      "2021-02-18-17-48-50_seg_2",
+      "2021-02-18-18-03-06_seg_2",
+      "2021-02-23-10-43-02_seg_3",
+      "2021-02-23-10-50-42_seg_1",
+      "2021-02-23-11-31-23_seg_1",
+      "2021-02-23-11-41-38_seg_1",
+      "2021-02-23-14-21-48_seg_2",
+      "2021-02-23-14-33-04_seg_1",
+      "2021-02-23-14-41-07_seg_3",
+      "2021-02-23-17-45-47_seg_1",
+      "2021-02-23-18-38-21_seg_2",
+      "2021-02-23-18-50-03_seg_1",
+      "2021-02-23-19-04-50_seg_1",
+      "2021-02-23-19-15-11_seg_2",
+      "2021-02-23-19-26-38_seg_3",
+      "2021-02-23-19-45-06_seg_1",
+      "2021-02-23-21-57-38_seg_1",
+      "2021-02-23-22-03-52_seg_2",
+      "2021-02-23-22-19-12_seg_3",
+      "2021-02-23-22-33-54_seg_2",
+      "2021-02-23-22-41-46_seg_2"
+    ]
+  },
+  "quat_norm_abs_err": {
+    "median": 7.01403193748007e-07,
+    "p99": 0.0004528472047910207,
+    "max": 0.010906782549839344,
+    "frac_over_1e-3": 0.004554868928516272
+  },
+  "test1a_hover_gravity": {
+    "n_hover": 32790,
+    "n_hover_segments": 59,
+    "baseline_level_rms_xy": 0.08093426849213237,
+    "candidates": {
+      "xyzw_hamilton_body_to_world": {
+        "rms_xy_residual": 0.172644446619921,
+        "rms_3d_residual": 0.19244895700632264,
+        "median_angle_deg_acc_vs_minus_g": 0.7971873075847418,
+        "median_tilt_deg": 0.755404420590662
+      },
+      "xyzw_hamilton_world_to_body": {
+        "rms_xy_residual": 0.19299340350217922,
+        "rms_3d_residual": 0.2108955900427452,
+        "median_angle_deg_acc_vs_minus_g": 0.8683656195643242,
+        "median_tilt_deg": 0.755404420590662
+      },
+      "wxyz_hamilton_body_to_world": {
+        "rms_xy_residual": 3.2039571458152283,
+        "rms_3d_residual": 6.883524412761163,
+        "median_angle_deg_acc_vs_minus_g": 5.806860700127535,
+        "median_tilt_deg": 5.4482867690874395
+      },
+      "wxyz_hamilton_world_to_body": {
+        "rms_xy_residual": 3.203349310789783,
+        "rms_3d_residual": 6.883241515143561,
+        "median_angle_deg_acc_vs_minus_g": 5.8037476509535875,
+        "median_tilt_deg": 5.4482867690874395
+      }
+    },
+    "median_acc_z_hover": 9.805334783177587
+  },
+  "test1a_direction_resolvable": false,
+  "test1b_velocity_kinematics": {
+    "n": 472091,
+    "rms_dpos_dt": 6.034212091109319,
+    "vel_is_world_rms": 7.87394434602004,
+    "candidates": {
+      "xyzw_hamilton_body_to_world": {
+        "rms_residual": 0.014572034445969996
+      },
+      "xyzw_hamilton_world_to_body": {
+        "rms_residual": 7.944256353423372
+      },
+      "wxyz_hamilton_body_to_world": {
+        "rms_residual": 9.758384153852045
+      },
+      "wxyz_hamilton_world_to_body": {
+        "rms_residual": 9.75687106949244
+      }
+    }
+  },
+  "quat_convention_winner": "xyzw_hamilton_body_to_world",
+  "test2_acc_type": {
+    "n": 472091,
+    "convention": "xyzw_hamilton_body_to_world",
+    "kinematic_rms": 9.811638284279452,
+    "kinematic_rms_per_axis": [
+      4.239051118021149,
+      3.7636881748561843,
+      8.008329586298855
+    ],
+    "specific_force_rms": 0.23037392689102146,
+    "specific_force_rms_per_axis": [
+      0.15141779528940064,
+      0.13918100731893915,
+      0.10379520539298659
+    ],
+    "specific_force_z_scale": 0.9998674739798328,
+    "median_acc_z": 10.748441050606214,
+    "median_acc_z_hover": 9.805334783177587
+  },
+  "acc_is_specific_force": true,
+  "git_hash": "a23fc10"
+}

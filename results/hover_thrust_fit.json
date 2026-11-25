@@ -1,0 +1,38 @@
+{
+  "n_hover_samples": 118715,
+  "n_segments": 234,
+  "mask": "speed<0.3 m/s, |omega|<0.3 rad/s, |dv/dt|<0.3 m/s^2, all motors>800 rad/s, 5-sample segment edges dropped",
+  "k_through_origin_N_per_rad2s2": 1.507134660716894e-06,
+  "rmse_through_origin_N": 0.20307886237171127,
+  "r2_through_origin": -9.04055560816848,
+  "k_with_intercept": 1.1409931306591813e-07,
+  "intercept_N": 6.9956861617416655,
+  "r2_with_intercept": 0.06101353413113919,
+  "thrust_N_range": [
+    6.97491429153495,
+    7.891390695605424
+  ],
+  "sum_omega2_range": [
+    4224136.054373239,
+    5471074.342142107
+  ],
+  "mass_kg": 0.772,
+  "excluded": "server testset.txt segments",
+  "k_across_flights": {
+    "n_flights": 92,
+    "mean": 1.506083435982176e-06,
+    "std": 3.3625436907461474e-08,
+    "min": 1.451973491924932e-06,
+    "max": 1.5682415102110746e-06
+  },
+  "k_within_flight_rel_std_median": 0.007032083028645516,
+  "k_median_per_day": {
+    "2021-02-03": 1.4841659748834233e-06,
+    "2021-02-05": 1.4703162821890594e-06,
+    "2021-02-18": 1.4995377785839467e-06,
+    "2021-02-23": 1.5519479559756544e-06
+  },
+  "corr_k_vbat": 0.25769002133083585,
+  "thrust_median_N": 7.569883220823128,
+  "note": "R^2 is vs the mean of a near-constant hover thrust (~m*g); use rmse and k spread instead. Exploratory: refit k on the CP2 training split before using it in a prior."
+}
