@@ -1,0 +1,5 @@
+# M2: hybrid = P0b prior + MLP residual, current sample. H1 compares M2 vs M1.
+name: m2_hybrid_mlp
+model: {type: mlp, prior: true, hidden: [128, 128, 64], nll: false}
+data: {source: neurobem, split: A, max_window: 20}
+train: {batch_size: 1024, lr: 1.0e-3, max_epochs: 100, patience: 8, max_hours: 8}

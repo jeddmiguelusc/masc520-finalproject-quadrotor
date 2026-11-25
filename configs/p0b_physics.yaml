@@ -1,0 +1,4 @@
+# P0b: omega^2 + linear rotor drag, 15 coefficients by least squares on train (src/models/physics.py).
+name: p0b_physics
+model: {type: physics}
+data: {source: neurobem, split: A}

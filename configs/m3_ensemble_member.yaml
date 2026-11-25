@@ -1,0 +1,5 @@
+# One member of the 3-member M3 ensemble (H4). Run with --seed 0, 1, 2.
+name: m3_ens
+model: {type: tcn, prior: true, window: 20, channels: 40, kernel: 3, dilations: [1, 2, 4, 8], head_hidden: 64, nll: true}
+data: {source: neurobem, split: A, max_window: 20}
+train: {batch_size: 1024, lr: 1.0e-3, max_epochs: 100, patience: 8, max_hours: 8}

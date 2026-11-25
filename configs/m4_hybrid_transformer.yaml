@@ -1,0 +1,5 @@
+# M4 (stretch, go/no-go Thu night): hybrid = P0b prior + 2-layer, 4-head transformer, d=40 (~25k params).
+name: m4_hybrid_transformer
+model: {type: transformer, prior: true, window: 20, d_model: 40, n_heads: 4, n_layers: 2, d_ff: 80, nll: false}
+data: {source: neurobem, split: A, max_window: 20}
+train: {batch_size: 1024, lr: 5.0e-4, max_epochs: 100, patience: 8, max_hours: 8}

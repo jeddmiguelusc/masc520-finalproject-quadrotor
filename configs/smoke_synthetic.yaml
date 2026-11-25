@@ -1,0 +1,6 @@
+# Smoke test on synthetic data (never for results): python -m src.train --config configs/smoke_synthetic.yaml
+name: smoke_synthetic
+model: {type: tcn, prior: true, window: 20}
+data: {source: synthetic, n_segments: 10, segment_length: 2000, max_window: 20}
+train: {batch_size: 512, max_epochs: 5, device: auto}
+log: {runs_csv: results/runs_smoke.csv}

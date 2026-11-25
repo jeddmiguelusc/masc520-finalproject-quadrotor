@@ -1,0 +1,4 @@
+# P0a: predict the training-set mean force/moment. Lower bound every model must beat.
+name: p0a_constant
+model: {type: constant}
+data: {source: neurobem, split: A}
