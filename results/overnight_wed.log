@@ -1,0 +1,36 @@
+### start Wed Nov 25 23:31:43 PST 2026 git b80dac9
+=== 23:31:43 configs/m3_ensemble_member_Bs.yaml seed 0
+[m3_ens_Bs_seed0] done: early_stop, best epoch 63, val F 0.1719 N, M 0.00276 N·m, 272s -> runs.csv
+=== 23:36:17 configs/m3_ensemble_member_Bs.yaml seed 1
+[m3_ens_Bs_seed1] done: early_stop, best epoch 74, val F 0.1644 N, M 0.00276 N·m, 282s -> runs.csv
+=== 23:41:00 configs/m3_ensemble_member_Bs.yaml seed 2
+[m3_ens_Bs_seed2] done: early_stop, best epoch 73, val F 0.1721 N, M 0.00265 N·m, 276s -> runs.csv
+=== 23:45:36 configs/m3_hybrid_tcn_Bs.yaml seed 0
+[m3_hybrid_tcn_Bs_seed0] done: early_stop, best epoch 40, val F 0.1711 N, M 0.00334 N·m, 158s -> runs.csv
+=== 23:48:16 configs/m3_ensemble_member.yaml seed 0
+[m3_ens_seed0] done: max_epochs, best epoch 98, val F 0.2880 N, M 0.00484 N·m, 548s -> runs.csv
+=== 23:57:24 configs/m3_ensemble_member.yaml seed 1
+[m3_ens_seed1] done: max_epochs, best epoch 98, val F 0.2977 N, M 0.00498 N·m, 549s -> runs.csv
+=== 00:06:34 configs/m3_ensemble_member.yaml seed 2
+[m3_ens_seed2] done: max_epochs, best epoch 96, val F 0.2873 N, M 0.00486 N·m, 549s -> runs.csv
+=== 00:15:45 configs/m1_mlp.yaml seed 1
+[m1_mlp_seed1] done: early_stop, best epoch 19, val F 0.5254 N, M 0.01383 N·m, 41s -> runs.csv
+=== 00:16:27 configs/m2_hybrid_mlp.yaml seed 1
+[m2_hybrid_mlp_seed1] done: early_stop, best epoch 16, val F 0.4206 N, M 0.01386 N·m, 56s -> runs.csv
+=== 00:17:23 configs/m1_mlp_Bs.yaml seed 1
+[m1_mlp_Bs_seed1] done: early_stop, best epoch 10, val F 0.3228 N, M 0.00800 N·m, 17s -> runs.csv
+=== 00:17:41 configs/m2_hybrid_mlp_Bs.yaml seed 1
+[m2_hybrid_mlp_Bs_seed1] done: early_stop, best epoch 7, val F 0.2724 N, M 0.00824 N·m, 22s -> runs.csv
+=== 00:18:05 configs/m3_hybrid_tcn.yaml seed 1
+[m3_hybrid_tcn_seed1] done: early_stop, best epoch 64, val F 0.3160 N, M 0.00517 N·m, 382s -> runs.csv
+=== 00:24:28 configs/m1_mlp.yaml seed 2
+[m1_mlp_seed2] done: early_stop, best epoch 12, val F 0.5440 N, M 0.01389 N·m, 31s -> runs.csv
+=== 00:25:00 configs/m2_hybrid_mlp.yaml seed 2
+[m2_hybrid_mlp_seed2] done: early_stop, best epoch 12, val F 0.4154 N, M 0.01404 N·m, 47s -> runs.csv
+=== 00:25:47 configs/m1_mlp_Bs.yaml seed 2
+[m1_mlp_Bs_seed2] done: early_stop, best epoch 8, val F 0.3158 N, M 0.00815 N·m, 15s -> runs.csv
+=== 00:26:04 configs/m2_hybrid_mlp_Bs.yaml seed 2
+[m2_hybrid_mlp_Bs_seed2] done: early_stop, best epoch 7, val F 0.2644 N, M 0.00810 N·m, 22s -> runs.csv
+=== 00:26:27 configs/m3_hybrid_tcn.yaml seed 2
+[m3_hybrid_tcn_seed2] done: early_stop, best epoch 64, val F 0.3154 N, M 0.00530 N·m, 382s -> runs.csv
+### end Thu Nov 26 00:32:50 PST 2026
