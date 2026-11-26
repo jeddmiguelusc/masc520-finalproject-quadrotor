@@ -16,13 +16,17 @@ from torch import nn
 from src.models.physics import PhysicsPrior
 
 LOGVAR_MIN, LOGVAR_MAX = -12.0, 6.0
+N_STATE = 9            # inputs 0..8: vel (3), ang_vel (3), g_body (3) - see src/data/features.py
 
 
 class ForceModel(nn.Module):
     def __init__(self, backbone: nn.Module | None, n_in: int, n_out: int = 6, window: int = 1,
-                 prior: bool = False, nll: bool = False):
+                 prior: bool = False, nll: bool = False, input_noise: float = 0.0, history: str = "all"):
         super().__init__()
+        if history not in ("all", "actuator"):
+            raise ValueError(f"history must be 'all' or 'actuator', got {history!r}")
         self.backbone, self.window, self.nll, self.n_out = backbone, window, nll, n_out
+        self.input_noise, self.history = float(input_noise), history
         self.prior = PhysicsPrior() if prior else None
         self.register_buffer("x_mean", torch.zeros(n_in))
         self.register_buffer("x_std", torch.ones(n_in))
@@ -59,7 +63,13 @@ class ForceModel(nn.Module):
         """Standardised residual mean (B,6) and log-variance (B,6) or None."""
         if self.backbone is None:
             return torch.zeros(x.shape[0], self.n_out, device=x.device), None
-        z = self.backbone((x[:, -self.window:, :] - self.x_mean) / self.x_std)
+        z = (x[:, -self.window:, :] - self.x_mean) / self.x_std
+        if self.history == "actuator" and z.shape[1] > 1:
+            # state channels (vel, ang_vel, g_body = inputs 0..8) frozen at the current sample
+            z = torch.cat([z[:, -1:, :N_STATE].expand(-1, z.shape[1], -1), z[:, :, N_STATE:]], 2)
+        if self.training and self.input_noise > 0:
+            z = z + self.input_noise * torch.randn_like(z)
+        z = self.backbone(z)
         if self.nll:
             return z[:, :self.n_out], z[:, self.n_out:].clamp(LOGVAR_MIN, LOGVAR_MAX)
         return z, None

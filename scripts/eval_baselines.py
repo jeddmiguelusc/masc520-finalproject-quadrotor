@@ -1,4 +1,4 @@
-"""CP3: fit P0a / P0b / B1 on train, score on validation; estimate the target noise floor.
+"""CP3/CP4: fit P0a / P0b / B1 / B2 on train, score on validation; estimate the target noise floor.
 
     python scripts/eval_baselines.py         -> results/val_baselines.json, results/noise_floor.json
 
@@ -6,6 +6,8 @@ Splits and evaluation sets (validation only; test parts are never loaded):
   A   : fit on A/train,   score on A/val
   B_s : fit on B_s/train (|v| <= 5 m/s), score on B_s/val (slow) AND on A/val (all speeds: same
         flights as B_s/val, never in B_s/train) -> the speed-extrapolation view used for H1.
+B2 (CP4): ridge on the 20-sample history of body velocity and rates only - a learned linear
+differentiator, the reference for what windowed models can get without aerodynamics.
 Metrics follow the paper's Table II definition (src/eval/metrics.py). CIs: 2000 flight resamples.
 """
 from __future__ import annotations
@@ -21,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.data.dataset import load_part, read_splits  # noqa: E402
 from src.data.load import REPO, load_all  # noqa: E402
 from src.eval import metrics as M  # noqa: E402
-from src.eval.baselines import ALPHAS, ConstantModel, PhysicsModel, RidgePoly2  # noqa: E402
+from src.eval.baselines import ALPHAS, ALPHAS_B2, ConstantModel, KinematicFIR, PhysicsModel, RidgePoly2  # noqa: E402
 from src.eval.evaluate import paired, score, scored_rows, short  # noqa: E402
 from src.eval.noise import noise_floor, noise_floor_by_speed  # noqa: E402
 
@@ -52,25 +54,33 @@ def main():
             sel[a] = std_mse(own_val["Y"], b1.set_alpha(a).predict(own_val["X"]), var)
         best = min(sel, key=sel.get)
         b1.set_alpha(best)
+        b2 = KinematicFIR().fit_stats_rows(tr)
+        sel2 = {a: std_mse(own_val["Y"], b2.set_alpha(a).predict_rows(own_val), var) for a in ALPHAS_B2}
+        best2 = min(sel2, key=sel2.get)
+        b2.set_alpha(best2)
         res = {"n_train_scored": int(len(tr["Y"])), "n_train_flights": int(len(set(tr["flights"]))),
                "P0b_train_r2": p0b.r2, "P0b_coefs": [c.tolist() for c in p0b.coefs],
                "B1_alpha_selection_val_std_mse": {str(k): v for k, v in sel.items()}, "B1_alpha": best,
+               "B2_alpha_selection_val_std_mse": {str(k): v for k, v in sel2.items()}, "B2_alpha": best2,
                "eval": {}}
         print(f"\n=== split {key}: train {len(tr['Y']):,} scored samples, {res['n_train_flights']} flights; "
-              f"B1 alpha {best:g}")
+              f"B1 alpha {best:g}, B2 alpha {best2:g}")
         for name, rows in evals.items():
             res["eval"][name] = {}
             for model in (p0a, p0b, b1):
                 res["eval"][name][model.name] = sc = score(rows, model.predict(rows["X"]))
                 print(f"[{key} -> {name}] {model.name:3s} {short(sc)}")
-            for model in (p0b, b1):
+            res["eval"][name]["B2"] = sc = score(rows, b2.predict_rows(rows))
+            print(f"[{key} -> {name}] B2  {short(sc)}")
+            for model in (p0b, b1, b2):
                 sc = res["eval"][name][model.name]
                 if sc["gt5"]["n"]:
                     print(f"[{key} -> {name}] {model.name:3s} |v|>5 only: {short(sc, 'gt5')}")
             # paired: B1 vs P0b, P0b vs P0a
             e = res["eval"][name]
             res["eval"][name]["paired"] = {"B1_minus_P0b": paired(e["B1"], e["P0b"]),
-                                           "P0b_minus_P0a": paired(e["P0b"], e["P0a"])}
+                                           "P0b_minus_P0a": paired(e["P0b"], e["P0a"]),
+                                           "B2_minus_B1": paired(e["B2"], e["B1"])}
             sp = {lab: round(v.get("F", float("nan")), 3) for lab, v in e["P0b"]["by_speed"].items()}
             print(f"[{key} -> {name}] P0b F by speed bin: {sp}")
         out["splits"][key] = res

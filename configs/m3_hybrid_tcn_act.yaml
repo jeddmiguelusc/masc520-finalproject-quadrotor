@@ -1,0 +1,7 @@
+# M3act (CP4 ablation): M3 with actuator-only history. Past motor speeds, dmot and vbat enter the TCN;
+# vel / ang_vel / g_body only at the current sample. Removes the finite-differencing path to the targets
+# (B2 = linear differentiator on the vel/rate window reaches M 0.0033 N·m on A/val, about M3's 0.0030).
+name: m3_hybrid_tcn_act
+model: {type: tcn, prior: true, window: 20, channels: 40, kernel: 3, dilations: [1, 2, 4, 8], head_hidden: 64, nll: false, history: actuator}
+data: {source: neurobem, split: A, max_window: 20}
+train: {batch_size: 1024, lr: 1.0e-3, max_epochs: 100, patience: 8, max_hours: 8}

@@ -171,3 +171,41 @@ def test_two_epochs_on_mps(tmp_path, name):
     out = run(cfg, verbose=False)
     assert out["row"]["device"] == "mps" and out["row"]["epochs_run"] == 2
     assert np.isfinite(out["final"]["rmse_F"])
+
+
+# ---------------------------------------------------------------- CP4 options: history, dropout, input noise
+def test_actuator_history_ignores_past_state_but_sees_past_motors():
+    import torch
+    from src.models import build_model
+    torch.manual_seed(0)
+    m = build_model({"type": "tcn", "prior": False, "window": 20, "history": "actuator"}).eval()
+    x = torch.randn(4, 20, 18)
+    y0 = m(x)[0]
+    x_state = x.clone(); x_state[:, :-1, :9] += torch.randn(4, 19, 9)        # change past vel/rates/g_b
+    x_mot = x.clone(); x_mot[:, :-1, 9:13] += torch.randn(4, 19, 4)           # change past motor speeds
+    x_now = x.clone(); x_now[:, -1, 0:3] += 1.0                               # change current velocity
+    assert torch.allclose(m(x_state)[0], y0, atol=1e-6)
+    assert not torch.allclose(m(x_mot)[0], y0, atol=1e-4)
+    assert not torch.allclose(m(x_now)[0], y0, atol=1e-4)
+
+
+def test_default_options_keep_wed_state_dict_keys():
+    from src.models import build_model
+    for cfg in ({"type": "mlp", "prior": True}, {"type": "tcn", "prior": True, "window": 20}):
+        plain = set(build_model(cfg).state_dict())
+        assert plain == set(build_model({**cfg, "dropout": 0.0, "input_noise": 0.0, "history": "all"}).state_dict())
+        # TCN dropout has no parameters, so even dropout > 0 keeps the keys; MLP dropout shifts indices
+        if cfg["type"] == "tcn":
+            assert plain == set(build_model({**cfg, "dropout": 0.1}).state_dict())
+
+
+def test_input_noise_only_while_training():
+    import torch
+    from src.models import build_model
+    torch.manual_seed(0)
+    m = build_model({"type": "mlp", "prior": False, "input_noise": 0.5})
+    x = torch.randn(8, 20, 18)
+    m.eval()
+    assert torch.equal(m(x)[0], m(x)[0])
+    m.train()
+    assert not torch.equal(m(x)[0], m(x)[0])

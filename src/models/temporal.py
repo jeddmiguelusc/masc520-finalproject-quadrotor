@@ -25,8 +25,9 @@ class TCNBackbone(nn.Module):
     uses_history = True
 
     def __init__(self, n_in: int, n_out: int, channels: int = 40, kernel: int = 3,
-                 dilations=(1, 2, 4, 8), head_hidden: int = 64):
+                 dilations=(1, 2, 4, 8), head_hidden: int = 64, dropout: float = 0.0):
         super().__init__()
+        self.drop = nn.Dropout(dropout) if dropout > 0 else nn.Identity()   # no parameters either way
         self.inp = CausalConv(n_in, channels, kernel, 1)
         self.blocks = nn.ModuleList([CausalConv(channels, channels, kernel, d) for d in dilations[1:]])
         self.act = nn.SiLU()
@@ -39,9 +40,9 @@ class TCNBackbone(nn.Module):
         self._half = half
 
     def sequence_features(self, x: torch.Tensor) -> torch.Tensor:   # (B, W, F) -> (B, C, W)
-        h = self.act(self.inp(x.transpose(1, 2)))
+        h = self.drop(self.act(self.inp(x.transpose(1, 2))))
         for blk in self.blocks:
-            h = h + self.act(blk(h))                        # residual
+            h = h + self.drop(self.act(blk(h)))             # residual
         return h
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:      # x (B, W, F)

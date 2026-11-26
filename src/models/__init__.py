@@ -5,6 +5,13 @@
     mlp          M1 (prior: false) / M2 (prior: true)   current sample only
     tcn          M3   causal TCN over the window, prior: true
     transformer  M4   small transformer over the window, prior: true
+
+Optional keys (CP4 sweep; defaults reproduce the Wed models exactly):
+    dropout      MLP / TCN dropout probability (default 0)
+    input_noise  std of Gaussian noise added to the standardised inputs while training (default 0)
+    history      "all" (default) or "actuator": windowed models see past motor speeds, dmot and vbat,
+                 but vel / ang_vel / g_body only at the current sample (no finite-differencing path
+                 to the targets; see B2 in src/eval/baselines.py)
 """
 from __future__ import annotations
 
@@ -26,14 +33,16 @@ def build_model(mcfg: dict):
     if t == "physics":
         return ForceModel(None, N_FEATURES, N_TARGETS, 1, prior=True)
     if t == "mlp":
-        bb = MLPBackbone(N_FEATURES, n_out, tuple(mcfg.get("hidden", (128, 128, 64))))
+        bb = MLPBackbone(N_FEATURES, n_out, tuple(mcfg.get("hidden", (128, 128, 64))), float(mcfg.get("dropout", 0.0)))
         window = 1
     elif t == "tcn":
         bb = TCNBackbone(N_FEATURES, n_out, mcfg.get("channels", 40), mcfg.get("kernel", 3),
-                         tuple(mcfg.get("dilations", (1, 2, 4, 8))), mcfg.get("head_hidden", 64))
+                         tuple(mcfg.get("dilations", (1, 2, 4, 8))), mcfg.get("head_hidden", 64),
+                         float(mcfg.get("dropout", 0.0)))
     elif t == "transformer":
         bb = TransformerBackbone(N_FEATURES, n_out, mcfg.get("d_model", 40), mcfg.get("n_heads", 4),
                                  mcfg.get("n_layers", 2), mcfg.get("d_ff", 80), window)
     else:
         raise ValueError(f"unknown model type {t!r}")
-    return ForceModel(bb, N_FEATURES, N_TARGETS, window, prior=bool(mcfg.get("prior", False)), nll=nll)
+    return ForceModel(bb, N_FEATURES, N_TARGETS, window, prior=bool(mcfg.get("prior", False)), nll=nll,
+                      input_noise=float(mcfg.get("input_noise", 0.0)), history=mcfg.get("history", "all"))

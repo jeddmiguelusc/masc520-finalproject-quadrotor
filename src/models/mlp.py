@@ -9,11 +9,13 @@ class MLPBackbone(nn.Module):
     """Normalised inputs at the current sample -> n_out residual outputs. Default ~27k params."""
     uses_history = False
 
-    def __init__(self, n_in: int, n_out: int, hidden=(128, 128, 64)):
+    def __init__(self, n_in: int, n_out: int, hidden=(128, 128, 64), dropout: float = 0.0):
         super().__init__()
         layers, d = [], n_in
         for h in hidden:
             layers += [nn.Linear(d, h), nn.SiLU()]
+            if dropout > 0:            # only added when used, so dropout-free checkpoints keep their keys
+                layers.append(nn.Dropout(dropout))
             d = h
         layers.append(nn.Linear(d, n_out))
         self.net = nn.Sequential(*layers)
