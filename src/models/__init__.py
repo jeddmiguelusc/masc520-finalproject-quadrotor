@@ -9,13 +9,14 @@
 from __future__ import annotations
 
 from src.data.features import N_FEATURES, N_TARGETS
-from src.models.core import ForceModel
-from src.models.mlp import MLPBackbone
-from src.models.temporal import TCNBackbone
-from src.models.transformer import TransformerBackbone
 
 
-def build_model(mcfg: dict) -> ForceModel:
+def build_model(mcfg: dict):
+    # torch imports here, so torch-free submodules (src.models.physics_np) import without torch
+    from src.models.core import ForceModel
+    from src.models.mlp import MLPBackbone
+    from src.models.temporal import TCNBackbone
+    from src.models.transformer import TransformerBackbone
     t = mcfg["type"]
     nll = bool(mcfg.get("nll", False))
     n_out = N_TARGETS * (2 if nll else 1)

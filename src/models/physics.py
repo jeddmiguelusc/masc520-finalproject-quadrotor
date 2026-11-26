@@ -19,30 +19,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from src.data.features import IDX
-
-_V = [IDX["vel_x"], IDX["vel_y"], IDX["vel_z"]]
-_M = [IDX["mot1"], IDX["mot2"], IDX["mot3"], IDX["mot4"]]
-TERM_NAMES = [
-    ["1", "v_x", "v_x*sum_w"], ["1", "v_y", "v_y*sum_w"], ["1", "sum_w2", "v_z"],
-    ["1", "roll_w2"], ["1", "pitch_w2"], ["1", "yaw_w2"],
-]
-
-
-def _design(x, lib):
-    """Per-output design matrices from raw inputs x (N, 18). lib = np or torch."""
-    v = x[:, _V]; w = x[:, _M]; w2 = w * w
-    one = lib.ones_like(v[:, 0])
-    sw, s2 = w.sum(1), w2.sum(1)
-    st = lib.stack
-    return [
-        st([one, v[:, 0], v[:, 0] * sw], 1),
-        st([one, v[:, 1], v[:, 1] * sw], 1),
-        st([one, s2, v[:, 2]], 1),
-        st([one, w2[:, 2] + w2[:, 3] - w2[:, 0] - w2[:, 1]], 1),
-        st([one, w2[:, 0] + w2[:, 2] - w2[:, 1] - w2[:, 3]], 1),
-        st([one, w2[:, 0] + w2[:, 3] - w2[:, 1] - w2[:, 2]], 1),
-    ]
+from src.models.physics_np import TERM_NAMES, _design, fit_coefs  # shared with the numpy P0b baseline
 
 
 class PhysicsPrior(nn.Module):
@@ -56,15 +33,9 @@ class PhysicsPrior(nn.Module):
 
     def fit(self, X: np.ndarray, Y: np.ndarray) -> dict:
         """Least squares per output (float64, columns scaled for conditioning). Returns R^2 per output."""
-        D = _design(np.asarray(X, np.float64), np)
-        r2 = {}
-        for k, A in enumerate(D):
-            scale = np.abs(A).max(0); scale[scale == 0] = 1
-            coef, *_ = np.linalg.lstsq(A / scale, Y[:, k].astype(np.float64), rcond=None)
-            coef = coef / scale
-            getattr(self, f"coef{k}").copy_(torch.from_numpy(coef.astype(np.float32)))
-            pred = A @ coef
-            r2[k] = float(1 - np.sum((Y[:, k] - pred) ** 2) / np.sum((Y[:, k] - Y[:, k].mean()) ** 2))
+        coefs, r2 = fit_coefs(X, Y)
+        for k, c in enumerate(coefs):
+            getattr(self, f"coef{k}").copy_(torch.from_numpy(c.astype(np.float32)))
         self.fitted.fill_(True)
         return r2
 
