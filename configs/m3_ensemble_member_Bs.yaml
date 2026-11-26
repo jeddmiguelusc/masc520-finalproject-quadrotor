@@ -1,0 +1,6 @@
+# One member of the M3 ensemble trained on Split B_s (|v| <= 5 m/s) for H4: does predicted sigma rise
+# when the model is pushed past its training speeds? Run with --seed 0, 1, 2. Same model as m3_ensemble_member.
+name: m3_ens_Bs
+model: {type: tcn, prior: true, window: 20, channels: 40, kernel: 3, dilations: [1, 2, 4, 8], head_hidden: 64, nll: true}
+data: {source: neurobem, split: B_s, max_window: 20}
+train: {batch_size: 1024, lr: 1.0e-3, max_epochs: 100, patience: 8, max_hours: 8}

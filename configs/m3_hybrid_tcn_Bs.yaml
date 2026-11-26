@@ -1,0 +1,5 @@
+# M3 on Split B_s (speed extrapolation): does history still help past the training speeds? Same as m3_hybrid_tcn.
+name: m3_hybrid_tcn_Bs
+model: {type: tcn, prior: true, window: 20, channels: 40, kernel: 3, dilations: [1, 2, 4, 8], head_hidden: 64, nll: false}
+data: {source: neurobem, split: B_s, max_window: 20}
+train: {batch_size: 1024, lr: 1.0e-3, max_epochs: 100, patience: 8, max_hours: 8}
