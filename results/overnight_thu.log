@@ -1,0 +1,65 @@
+WARNING: uncommitted changes - runs.csv will log git_dirty=True
+### start Thu Nov 26 20:25:08 PST 2026 git 2252070
+=== 20:25:08 configs/m1_mlp_tuned.yaml seed 0
+[m1_mlp_tuned_seed0] done: early_stop, best epoch 33, val F 0.4716 N, M 0.01356 N·m, 62s -> runs.csv
+=== 20:26:11 configs/m1_mlp_tuned.yaml seed 1
+[m1_mlp_tuned_seed1] done: early_stop, best epoch 19, val F 0.4913 N, M 0.01370 N·m, 41s -> runs.csv
+=== 20:26:52 configs/m1_mlp_tuned.yaml seed 2
+[m1_mlp_tuned_seed2] done: early_stop, best epoch 39, val F 0.4667 N, M 0.01349 N·m, 70s -> runs.csv
+=== 20:28:03 configs/m2_hybrid_mlp_tuned.yaml seed 0
+[m2_hybrid_mlp_tuned_seed0] done: early_stop, best epoch 41, val F 0.4088 N, M 0.01362 N·m, 113s -> runs.csv
+=== 20:29:57 configs/m2_hybrid_mlp_tuned.yaml seed 1
+[m2_hybrid_mlp_tuned_seed1] done: early_stop, best epoch 30, val F 0.4031 N, M 0.01350 N·m, 88s -> runs.csv
+=== 20:31:26 configs/m2_hybrid_mlp_tuned.yaml seed 2
+[m2_hybrid_mlp_tuned_seed2] done: early_stop, best epoch 39, val F 0.4070 N, M 0.01358 N·m, 110s -> runs.csv
+=== 20:33:16 configs/m1_mlp_Bs_tuned.yaml seed 0
+[m1_mlp_Bs_tuned_seed0] done: early_stop, best epoch 25, val F 0.2968 N, M 0.00785 N·m, 31s -> runs.csv
+=== 20:33:49 configs/m1_mlp_Bs_tuned.yaml seed 1
+[m1_mlp_Bs_tuned_seed1] done: early_stop, best epoch 18, val F 0.3004 N, M 0.00782 N·m, 25s -> runs.csv
+=== 20:34:14 configs/m1_mlp_Bs_tuned.yaml seed 2
+[m1_mlp_Bs_tuned_seed2] done: early_stop, best epoch 23, val F 0.2921 N, M 0.00775 N·m, 29s -> runs.csv
+=== 20:34:45 configs/m2_hybrid_mlp_Bs_tuned.yaml seed 0
+[m2_hybrid_mlp_Bs_tuned_seed0] done: early_stop, best epoch 11, val F 0.2677 N, M 0.00809 N·m, 28s -> runs.csv
+=== 20:35:14 configs/m2_hybrid_mlp_Bs_tuned.yaml seed 1
+[m2_hybrid_mlp_Bs_tuned_seed1] done: early_stop, best epoch 18, val F 0.2627 N, M 0.00795 N·m, 38s -> runs.csv
+=== 20:35:53 configs/m2_hybrid_mlp_Bs_tuned.yaml seed 2
+[m2_hybrid_mlp_Bs_tuned_seed2] done: early_stop, best epoch 11, val F 0.2640 N, M 0.00792 N·m, 28s -> runs.csv
+=== 20:36:22 configs/m3_hybrid_tcn_tuned.yaml seed 0
+[m3_hybrid_tcn_tuned_seed0] done: early_stop, best epoch 121, val F 0.2918 N, M 0.00527 N·m, 697s -> runs.csv
+=== 20:48:00 configs/m3_hybrid_tcn_tuned.yaml seed 1
+[m3_hybrid_tcn_tuned_seed1] done: early_stop, best epoch 53, val F 0.3357 N, M 0.00564 N·m, 328s -> runs.csv
+=== 20:53:29 configs/m3_hybrid_tcn_tuned.yaml seed 2
+[m3_hybrid_tcn_tuned_seed2] done: early_stop, best epoch 94, val F 0.3155 N, M 0.00545 N·m, 545s -> runs.csv
+=== 21:02:36 configs/m3_hybrid_tcn_act_tuned.yaml seed 0
+[m3_hybrid_tcn_act_tuned_seed0] done: early_stop, best epoch 45, val F 0.3894 N, M 0.01338 N·m, 288s -> runs.csv
+=== 21:07:24 configs/m3_hybrid_tcn_act_tuned.yaml seed 1
+[m3_hybrid_tcn_act_tuned_seed1] done: early_stop, best epoch 33, val F 0.3924 N, M 0.01352 N·m, 223s -> runs.csv
+=== 21:11:08 configs/m3_hybrid_tcn_act_tuned.yaml seed 2
+[m3_hybrid_tcn_act_tuned_seed2] done: early_stop, best epoch 49, val F 0.3909 N, M 0.01327 N·m, 310s -> runs.csv
+=== 21:16:19 configs/m3_ens_tuned.yaml seed 0
+[m3_ens_tuned_seed0] done: early_stop, best epoch 139, val F 0.3293 N, M 0.00535 N·m, 809s -> runs.csv
+=== 21:29:49 configs/m3_ens_tuned.yaml seed 1
+[m3_ens_tuned_seed1] done: early_stop, best epoch 127, val F 0.3556 N, M 0.00514 N·m, 743s -> runs.csv
+=== 21:42:13 configs/m3_ens_tuned.yaml seed 2
+[m3_ens_tuned_seed2] done: early_stop, best epoch 105, val F 0.3256 N, M 0.00523 N·m, 618s -> runs.csv
+=== 21:52:32 configs/m3_ens_Bs_tuned.yaml seed 0
+[m3_ens_Bs_tuned_seed0] done: max_epochs, best epoch 148, val F 0.2042 N, M 0.00282 N·m, 508s -> runs.csv
+=== 22:01:01 configs/m3_ens_Bs_tuned.yaml seed 1
+[m3_ens_Bs_tuned_seed1] done: early_stop, best epoch 88, val F 0.1852 N, M 0.00295 N·m, 326s -> runs.csv
+=== 22:06:28 configs/m3_ens_Bs_tuned.yaml seed 2
+[m3_ens_Bs_tuned_seed2] done: early_stop, best epoch 142, val F 0.1841 N, M 0.00293 N·m, 508s -> runs.csv
+=== 22:14:57 configs/m3_hybrid_tcn_Bs_tuned.yaml seed 0
+[m3_hybrid_tcn_Bs_tuned_seed0] done: early_stop, best epoch 68, val F 0.1767 N, M 0.00328 N·m, 251s -> runs.csv
+=== 22:19:08 configs/m3_hybrid_tcn_Bs_tuned.yaml seed 1
+[m3_hybrid_tcn_Bs_tuned_seed1] done: early_stop, best epoch 72, val F 0.1725 N, M 0.00328 N·m, 264s -> runs.csv
+=== 22:23:33 configs/m3_hybrid_tcn_Bs_tuned.yaml seed 2
+[m3_hybrid_tcn_Bs_tuned_seed2] done: early_stop, best epoch 55, val F 0.1899 N, M 0.00348 N·m, 216s -> runs.csv
+=== 22:27:11 configs/m3_hybrid_tcn_act_Bs_tuned.yaml seed 0
+[m3_hybrid_tcn_act_Bs_tuned_seed0] done: early_stop, best epoch 38, val F 0.2514 N, M 0.00765 N·m, 154s -> runs.csv
+=== 22:29:46 configs/m4_hybrid_transformer.yaml seed 0
+[m4_hybrid_transformer_seed0] done: early_stop, best epoch 68, val F 0.3036 N, M 0.00588 N·m, 833s -> runs.csv
+=== 22:43:39 configs/m4_hybrid_transformer.yaml seed 1
+[m4_hybrid_transformer_seed1] done: early_stop, best epoch 71, val F 0.3077 N, M 0.00593 N·m, 867s -> runs.csv
+=== 22:58:07 configs/m4_hybrid_transformer.yaml seed 2
+[m4_hybrid_transformer_seed2] done: early_stop, best epoch 68, val F 0.3108 N, M 0.00609 N·m, 834s -> runs.csv
+### end Thu Nov 26 23:12:03 PST 2026
