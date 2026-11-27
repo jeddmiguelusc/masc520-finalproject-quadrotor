@@ -1,0 +1,12 @@
+# Written by scripts/sweep_summary.py from m2_hybrid_mlp_sw2 (lowest A/val loss of 8 configs).
+# Overrides vs configs/m2_hybrid_mlp.yaml: {'train.weight_decay': 0.1}
+name: m2_hybrid_mlp_tuned
+model:
+  hidden: [128, 128, 64]
+  nll: false
+  prior: true
+  type: mlp
+  window: 1
+data: {max_window: 20, source: neurobem, split: A}
+train: {batch_size: 1024, device: auto, eval_batch_size: 8192, grad_clip: 1.0, lr: 0.001, lr_factor: 0.5, lr_patience: 3,
+  max_epochs: 100, max_hours: 8, min_delta: 0.0001, patience: 8, weight_decay: 0.1}

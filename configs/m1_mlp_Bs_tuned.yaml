@@ -1,0 +1,13 @@
+# Written by scripts/sweep_summary.py from m1_mlp_sw2 (lowest A/val loss of 8 configs).
+# Overrides vs configs/m1_mlp.yaml: {'train.weight_decay': 0.1}
+# Variant: {'data.split': 'B_s'}
+name: m1_mlp_Bs_tuned
+model:
+  hidden: [128, 128, 64]
+  nll: false
+  prior: false
+  type: mlp
+  window: 1
+data: {max_window: 20, source: neurobem, split: B_s}
+train: {batch_size: 1024, device: auto, eval_batch_size: 8192, grad_clip: 1.0, lr: 0.001, lr_factor: 0.5, lr_patience: 3,
+  max_epochs: 100, max_hours: 8, min_delta: 0.0001, patience: 8, weight_decay: 0.1}

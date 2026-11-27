@@ -1,0 +1,16 @@
+# Written by scripts/sweep_summary.py from m3_hybrid_tcn_sw6 (lowest A/val loss of 8 configs).
+# Overrides vs configs/m3_hybrid_tcn.yaml: {'train.lr': 0.0003}
+# Variant: {'data.split': 'B_s'}
+name: m3_hybrid_tcn_Bs_tuned
+model:
+  channels: 40
+  dilations: [1, 2, 4, 8]
+  head_hidden: 64
+  kernel: 3
+  nll: false
+  prior: true
+  type: tcn
+  window: 20
+data: {max_window: 20, source: neurobem, split: B_s}
+train: {batch_size: 1024, device: auto, eval_batch_size: 8192, grad_clip: 1.0, lr: 0.0003, lr_factor: 0.5, lr_patience: 3,
+  max_epochs: 150, max_hours: 8, min_delta: 0.0001, patience: 8, weight_decay: 0.0}
