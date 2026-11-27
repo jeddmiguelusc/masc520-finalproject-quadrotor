@@ -1,0 +1,58 @@
+[m2_hybrid_mlp_seed0 -> A_val] F 0.242 [0.205,0.279] N  Fxy 0.166 Fz 0.346  M 0.0080 [0.0062,0.0095] N·m  (3.2% hover)
+                               |v|>5: F 0.333 [0.277,0.401] N  Fxy 0.235 Fz 0.472  M 0.0113 [0.0087,0.0140] N·m  (4.4% hover)
+   check: runs.csv F 0.4187 vs F_vecnorm 0.4187 OK
+[m2_hybrid_mlp_seed1 -> A_val] F 0.243 [0.207,0.277] N  Fxy 0.166 Fz 0.349  M 0.0080 [0.0062,0.0095] N·m  (3.2% hover)
+                               |v|>5: F 0.337 [0.281,0.399] N  Fxy 0.235 Fz 0.479  M 0.0113 [0.0087,0.0140] N·m  (4.4% hover)
+   check: runs.csv F 0.4205 vs F_vecnorm 0.4206 OK
+[m2_hybrid_mlp_seed2 -> A_val] F 0.240 [0.203,0.275] N  Fxy 0.167 Fz 0.341  M 0.0081 [0.0063,0.0097] N·m  (3.2% hover)
+                               |v|>5: F 0.330 [0.273,0.395] N  Fxy 0.238 Fz 0.462  M 0.0116 [0.0088,0.0144] N·m  (4.4% hover)
+   check: runs.csv F 0.4154 vs F_vecnorm 0.4154 OK
+[m3_hybrid_tcn_seed0 -> A_val] F 0.177 [0.150,0.207] N  Fxy 0.136 Fz 0.240  M 0.0030 [0.0024,0.0036] N·m  (2.3% hover)
+                               |v|>5: F 0.262 [0.219,0.311] N  Fxy 0.197 Fz 0.358  M 0.0044 [0.0035,0.0054] N·m  (3.5% hover)
+   check: runs.csv F 0.3074 vs F_vecnorm 0.3074 OK
+[m3_hybrid_tcn_seed1 -> A_val] F 0.182 [0.154,0.215] N  Fxy 0.136 Fz 0.251  M 0.0030 [0.0024,0.0036] N·m  (2.4% hover)
+                               |v|>5: F 0.269 [0.220,0.322] N  Fxy 0.197 Fz 0.373  M 0.0044 [0.0035,0.0054] N·m  (3.6% hover)
+   check: runs.csv F 0.3160 vs F_vecnorm 0.3160 OK
+[m3_hybrid_tcn_seed2 -> A_val] F 0.182 [0.154,0.214] N  Fxy 0.137 Fz 0.249  M 0.0031 [0.0025,0.0036] N·m  (2.4% hover)
+                               |v|>5: F 0.267 [0.222,0.319] N  Fxy 0.198 Fz 0.367  M 0.0045 [0.0036,0.0055] N·m  (3.5% hover)
+   check: runs.csv F 0.3154 vs F_vecnorm 0.3154 OK
+[m3_hybrid_tcn_act_seed0 -> A_val] F 0.229 [0.197,0.262] N  Fxy 0.157 Fz 0.328  M 0.0077 [0.0059,0.0093] N·m  (3.0% hover)
+                                   |v|>5: F 0.316 [0.261,0.375] N  Fxy 0.224 Fz 0.446  M 0.0110 [0.0082,0.0139] N·m  (4.2% hover)
+   check: runs.csv F 0.3962 vs F_vecnorm 0.3962 OK
+[m3_hybrid_tcn_act_seed1 -> A_val] F 0.223 [0.195,0.250] N  Fxy 0.159 Fz 0.314  M 0.0077 [0.0059,0.0092] N·m  (2.9% hover)
+                                   |v|>5: F 0.303 [0.256,0.354] N  Fxy 0.226 Fz 0.417  M 0.0111 [0.0083,0.0139] N·m  (4.0% hover)
+   check: runs.csv F 0.3863 vs F_vecnorm 0.3863 OK
+[m3_hybrid_tcn_act_seed2 -> A_val] F 0.220 [0.193,0.246] N  Fxy 0.155 Fz 0.312  M 0.0076 [0.0059,0.0091] N·m  (2.9% hover)
+                                   |v|>5: F 0.299 [0.253,0.348] N  Fxy 0.221 Fz 0.414  M 0.0108 [0.0083,0.0136] N·m  (4.0% hover)
+   check: runs.csv F 0.3812 vs F_vecnorm 0.3812 OK
+paired [A -> A_val, all, seed 0] M3 - M2: F -0.064 [-0.076,-0.050] N (p=0.000)  M -0.0050 [-0.0060,-0.0038] (p=0.000)
+paired [A -> A_val, all, seed 1] M3 - M2: F -0.060 [-0.071,-0.049] N (p=0.000)  M -0.0050 [-0.0060,-0.0038] (p=0.000)
+paired [A -> A_val, all, seed 2] M3 - M2: F -0.058 [-0.069,-0.043] N (p=0.000)  M -0.0051 [-0.0061,-0.0038] (p=0.000)
+paired [A -> A_val, all, seed 0] M2 - P0b: F -0.364 [-0.429,-0.292] N (p=0.000)  M -0.0134 [-0.0168,-0.0089] (p=0.000)
+paired [A -> A_val, all, seed 1] M2 - P0b: F -0.363 [-0.429,-0.289] N (p=0.000)  M -0.0134 [-0.0167,-0.0090] (p=0.000)
+paired [A -> A_val, all, seed 2] M2 - P0b: F -0.366 [-0.430,-0.295] N (p=0.000)  M -0.0133 [-0.0166,-0.0089] (p=0.000)
+paired [A -> A_val, all, seed 0] M3 - B1: F -0.186 [-0.220,-0.145] N (p=0.000)  M -0.0092 [-0.0110,-0.0071] (p=0.000)
+paired [A -> A_val, all, seed 1] M3 - B1: F -0.181 [-0.214,-0.141] N (p=0.000)  M -0.0092 [-0.0110,-0.0071] (p=0.000)
+paired [A -> A_val, all, seed 2] M3 - B1: F -0.181 [-0.214,-0.141] N (p=0.000)  M -0.0092 [-0.0109,-0.0071] (p=0.000)
+paired [A -> A_val, gt5, seed 0] M3 - M2: F -0.072 [-0.092,-0.049] N (p=0.000)  M -0.0069 [-0.0087,-0.0051] (p=0.000)
+paired [A -> A_val, gt5, seed 1] M3 - M2: F -0.068 [-0.082,-0.054] N (p=0.000)  M -0.0069 [-0.0087,-0.0051] (p=0.000)
+paired [A -> A_val, gt5, seed 2] M3 - M2: F -0.063 [-0.081,-0.043] N (p=0.000)  M -0.0071 [-0.0090,-0.0052] (p=0.000)
+paired [A -> A_val, all, seed 0] M3 - B2: F -0.158 [-0.224,-0.095] N (p=0.000)  M -0.0003 [-0.0004,-0.0001] (p=0.000)
+paired [A -> A_val, all, seed 1] M3 - B2: F -0.153 [-0.215,-0.093] N (p=0.000)  M -0.0003 [-0.0004,-0.0001] (p=0.000)
+paired [A -> A_val, all, seed 2] M3 - B2: F -0.153 [-0.216,-0.093] N (p=0.000)  M -0.0002 [-0.0003,-0.0001] (p=0.001)
+paired [A -> A_val, all, seed 0] M3act - M3: F +0.051 [+0.042,+0.059] N (p=1.000)  M +0.0047 [+0.0034,+0.0058] (p=1.000)
+paired [A -> A_val, all, seed 1] M3act - M3: F +0.041 [+0.030,+0.051] N (p=1.000)  M +0.0047 [+0.0034,+0.0057] (p=1.000)
+paired [A -> A_val, all, seed 2] M3act - M3: F +0.038 [+0.027,+0.047] N (p=1.000)  M +0.0045 [+0.0033,+0.0055] (p=1.000)
+paired [A -> A_val, all, seed 0] M3act - M2: F -0.013 [-0.022,-0.002] N (p=0.013)  M -0.0003 [-0.0004,-0.0001] (p=0.001)
+paired [A -> A_val, all, seed 1] M3act - M2: F -0.020 [-0.028,-0.012] N (p=0.000)  M -0.0003 [-0.0005,-0.0002] (p=0.000)
+paired [A -> A_val, all, seed 2] M3act - M2: F -0.020 [-0.031,-0.007] N (p=0.003)  M -0.0005 [-0.0007,-0.0004] (p=0.000)
+paired [A -> A_val, all, seed 0] M3act - B2: F -0.106 [-0.169,-0.047] N (p=0.000)  M +0.0044 [+0.0033,+0.0055] (p=1.000)
+paired [A -> A_val, all, seed 1] M3act - B2: F -0.112 [-0.178,-0.049] N (p=0.000)  M +0.0044 [+0.0032,+0.0054] (p=1.000)
+paired [A -> A_val, all, seed 2] M3act - B2: F -0.115 [-0.183,-0.051] N (p=0.000)  M +0.0043 [+0.0032,+0.0052] (p=1.000)
+seeds        m2_hybrid_mlp    A_val all: F 0.241 ± 0.002 (range 0.240-0.243)  M 0.0080 ± 0.0001  n=3
+seeds        m2_hybrid_mlp    A_val gt5: F 0.333 ± 0.003 (range 0.330-0.337)  M 0.0114 ± 0.0001  n=3
+seeds        m3_hybrid_tcn    A_val all: F 0.181 ± 0.003 (range 0.177-0.182)  M 0.0030 ± 0.0000  n=3
+seeds        m3_hybrid_tcn    A_val gt5: F 0.266 ± 0.004 (range 0.262-0.269)  M 0.0044 ± 0.0000  n=3
+seeds    m3_hybrid_tcn_act    A_val all: F 0.224 ± 0.004 (range 0.220-0.229)  M 0.0076 ± 0.0001  n=3
+seeds    m3_hybrid_tcn_act    A_val gt5: F 0.306 ± 0.008 (range 0.299-0.316)  M 0.0110 ± 0.0001  n=3
+wrote results/val_models_act_default.json

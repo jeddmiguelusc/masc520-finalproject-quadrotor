@@ -128,7 +128,7 @@ def run_batched(force, ep, steps, integ, mode, batch):
                 force = R.RecordedForce(sub)
             o = R.rollout(force, sub, steps, integ, mode)
             for k in errs:
-                errs[k].append(o[k].double().cpu().numpy())
+                errs[k].append(o[k].cpu().double().numpy())  # to CPU first: MPS has no float64
     return {k: np.concatenate(v) for k, v in errs.items()}           # (B, steps+1)
 
 

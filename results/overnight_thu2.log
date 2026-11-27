@@ -1,0 +1,12 @@
+### start Thu Nov 26 23:47:04 PST 2026 git 5703cdd
+=== 23:47:04 configs/m3_hybrid_tcn_act.yaml seed 0
+[m3_hybrid_tcn_act_seed0] done: early_stop, best epoch 48, val F 0.3962 N, M 0.01335 N·m, 301s -> runs.csv
+=== 23:52:06 configs/m3_hybrid_tcn_act.yaml seed 1
+[m3_hybrid_tcn_act_seed1] done: early_stop, best epoch 30, val F 0.3863 N, M 0.01328 N·m, 205s -> runs.csv
+=== 23:55:32 configs/m3_hybrid_tcn_act.yaml seed 2
+[m3_hybrid_tcn_act_seed2] done: early_stop, best epoch 23, val F 0.3812 N, M 0.01309 N·m, 168s -> runs.csv
+=== 23:58:21 eval_models (M3act default vs M3 / M2 Wed)
+ok -> results/val_models_act_default.json
+=== 23:58:25 eval_rollout
+FAILED eval_rollout (see results/eval_rollout.log)
+### end Thu Nov 26 23:58:27 PST 2026
