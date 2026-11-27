@@ -42,3 +42,36 @@ TypeError: '<=' not supported between instances of 'float' and 'str'
 === 12:10:44 m3_hybrid_tcn_sw7: train.max_epochs=150 train.patience=15
 [m3_hybrid_tcn_sw7_seed0] done: early_stop, best epoch 76, val F 0.3074 N, M 0.00520 N·m, 485s -> runs.csv
 ### end Thu Nov 26 12:18:50 PST 2026
+### start Thu Nov 26 19:38:43 PST 2026 git 486407b
+=== 19:38:43 m1_mlp_sw1: train.weight_decay=1e-2
+[m1_mlp_sw1_seed0] done: early_stop, best epoch 15, val F 0.5119 N, M 0.01391 N·m, 35s -> runs.csv
+=== 19:39:20 m1_mlp_sw2: train.weight_decay=1e-1
+[m1_mlp_sw2_seed0] done: early_stop, best epoch 33, val F 0.4716 N, M 0.01356 N·m, 62s -> runs.csv
+--- skip m1_mlp_sw3 (already in results/runs.csv)
+--- skip m1_mlp_sw4 (already in results/runs.csv)
+--- skip m1_mlp_sw5 (already in results/runs.csv)
+--- skip m1_mlp_sw6 (already in results/runs.csv)
+=== 19:40:22 m1_mlp_sw7: model.dropout=0.1 model.input_noise=0.05 train.weight_decay=1e-2
+[m1_mlp_sw7_seed0] done: early_stop, best epoch 33, val F 0.6064 N, M 0.01418 N·m, 65s -> runs.csv
+=== 19:41:28 m2_hybrid_mlp_sw1: train.weight_decay=1e-2
+[m2_hybrid_mlp_sw1_seed0] done: early_stop, best epoch 15, val F 0.4111 N, M 0.01382 N·m, 54s -> runs.csv
+=== 19:42:22 m2_hybrid_mlp_sw2: train.weight_decay=1e-1
+[m2_hybrid_mlp_sw2_seed0] done: early_stop, best epoch 41, val F 0.4088 N, M 0.01362 N·m, 113s -> runs.csv
+--- skip m2_hybrid_mlp_sw3 (already in results/runs.csv)
+--- skip m2_hybrid_mlp_sw4 (already in results/runs.csv)
+--- skip m2_hybrid_mlp_sw5 (already in results/runs.csv)
+--- skip m2_hybrid_mlp_sw6 (already in results/runs.csv)
+=== 19:44:16 m2_hybrid_mlp_sw7: model.dropout=0.1 model.input_noise=0.05 train.weight_decay=1e-2
+[m2_hybrid_mlp_sw7_seed0] done: early_stop, best epoch 40, val F 0.4075 N, M 0.01401 N·m, 115s -> runs.csv
+=== 19:46:12 m3_hybrid_tcn_sw1: train.weight_decay=1e-2
+[m3_hybrid_tcn_sw1_seed0] done: early_stop, best epoch 66, val F 0.3009 N, M 0.00529 N·m, 395s -> runs.csv
+--- skip m3_hybrid_tcn_sw2 (already in results/runs.csv)
+--- skip m3_hybrid_tcn_sw3 (already in results/runs.csv)
+=== 19:52:48 m3_hybrid_tcn_sw4: model.dropout=0.1 model.input_noise=0.05 train.weight_decay=1e-2
+[m3_hybrid_tcn_sw4_seed0] done: early_stop, best epoch 60, val F 0.3828 N, M 0.01078 N·m, 410s -> runs.csv
+=== 19:59:40 m3_hybrid_tcn_sw5: train.batch_size=4096 train.lr=2e-3
+[m3_hybrid_tcn_sw5_seed0] done: max_epochs, best epoch 95, val F 0.2964 N, M 0.00537 N·m, 412s -> runs.csv
+=== 20:06:33 m3_hybrid_tcn_sw6: train.lr=3e-4
+[m3_hybrid_tcn_sw6_seed0] done: max_epochs, best epoch 99, val F 0.2949 N, M 0.00535 N·m, 601s -> runs.csv
+--- skip m3_hybrid_tcn_sw7 (already in results/runs.csv)
+### end Thu Nov 26 20:16:35 PST 2026
