@@ -67,8 +67,19 @@ def load_config(path: str | Path | None = None, overrides: list[str] | None = No
         *parents, last = key.split(".")
         for p in parents:
             d = d.setdefault(p, {})
-        d[last] = yaml.safe_load(val)
+        d[last] = _scalar(yaml.safe_load(val))
     return deep_update(cfg, direct)
+
+
+def _scalar(v):
+    """YAML 1.1 reads '1e-2' (no decimal point) as a string; treat numeric strings as numbers.
+    (CP4 sweep: every weight_decay / lr override crashed AdamW with a str.)"""
+    if isinstance(v, str):
+        try:
+            return int(v) if v.lstrip("+-").isdigit() else float(v)
+        except ValueError:
+            return v
+    return v
 
 
 def git_info() -> tuple[str, bool]:

@@ -53,9 +53,13 @@ def dump(cfg: dict, path: Path, header: str) -> None:
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--metric", choices=["val_loss", "paper"], default="val_loss",
+                    help="val_loss: standardised MSE (training loss). paper: F/F_default + M/M_default in "
+                         "paper units (runs.csv vector norms are sqrt(3) x paper RMSE, so ratios are equal)")
+    ap.add_argument("--allow-incomplete", action="store_true", help="write tuned configs with < 8 configs")
     a = ap.parse_args(argv)
     rows = list(csv.DictReader((REPO / "results" / "runs.csv").open()))
-    out = {"source": "scripts/sweep_summary.py", "selection": "lowest best_val_loss (A/val std-MSE), seed 0",
+    out = {"source": "scripts/sweep_summary.py", "selection": f"lowest {a.metric} on A/val, seed 0",
            "models": {}}
     for m in MODELS:
         base = load_config(REPO / "configs" / f"{m}.yaml")
@@ -78,20 +82,30 @@ def main(argv=None):
                           "config": cfg})
         if not cands:
             continue
-        cands.sort(key=lambda c: c["best_val_loss"])
-        best, ref = cands[0], next((c for c in cands if c["name"] == m), None)
-        print(f"\n{m}: {len(cands)} of 8 configs")
-        print(f"  {'config':<22}{'val loss':>10}{'F vec':>8}{'M vec':>9}{'best ep':>8}{'epochs':>7}  overrides")
+        ref = next((c for c in cands if c["name"] == m), None)
         for c in cands:
-            print(f"  {c['name']:<22}{c['best_val_loss']:>10.5f}{c['val_rmse_F_vecnorm_N']:>8.4f}"
+            c["paper_score"] = (c["val_rmse_F_vecnorm_N"] / ref["val_rmse_F_vecnorm_N"]
+                                + c["val_rmse_M_vecnorm_Nm"] / ref["val_rmse_M_vecnorm_Nm"]) if ref else None
+        key = "best_val_loss" if a.metric == "val_loss" else "paper_score"
+        cands.sort(key=lambda c: c[key])
+        best = cands[0]
+        print(f"\n{m}: {len(cands)} of 8 configs")
+        print(f"  {'config':<22}{'val loss':>10}{'paper':>7}{'F vec':>8}{'M vec':>9}{'best ep':>8}{'epochs':>7}  overrides")
+        for c in cands:
+            ps = f"{c['paper_score']:>7.3f}" if c["paper_score"] is not None else f"{'-':>7}"
+            print(f"  {c['name']:<22}{c['best_val_loss']:>10.5f}{ps}{c['val_rmse_F_vecnorm_N']:>8.4f}"
                   f"{c['val_rmse_M_vecnorm_Nm']:>9.5f}{c['best_epoch']:>8d}{c['epochs_run']:>7d}  "
                   f"{c['overrides'] or '(default)'}")
         gain = (1 - best["best_val_loss"] / ref["best_val_loss"]) * 100 if ref else None
         print(f"  -> chosen {best['name']}" + (f" ({gain:+.1f}% val loss vs default)" if gain is not None else ""))
-        out["models"][m] = {"n_configs": len(cands), "chosen": best["name"], "chosen_overrides": best["overrides"],
+        if len(cands) < 8 and not a.allow_incomplete and not a.dry_run:
+            print(f"  !! only {len(cands)} of 8 configs - not writing tuned configs (re-run scripts/sweep_thu.sh)")
+            a.dry_run_model = True
+        out["models"][m] = {"n_configs": len(cands), "metric": a.metric, "chosen": best["name"], "chosen_overrides": best["overrides"],
                             "val_loss_gain_vs_default_pct": gain,
                             "candidates": [{k: v for k, v in c.items() if k != "config"} for c in cands]}
-        if a.dry_run:
+        if a.dry_run or getattr(a, "dry_run_model", False):
+            a.dry_run_model = False
             continue
         cfg = {k: v for k, v in best["config"].items() if k not in ("seed", "log")}
         hdr = (f"# Written by scripts/sweep_summary.py from {best['name']} (lowest A/val loss of {len(cands)} configs).\n"

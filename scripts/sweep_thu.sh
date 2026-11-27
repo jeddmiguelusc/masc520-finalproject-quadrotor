@@ -9,6 +9,9 @@ cd "$(dirname "$0")/.." || exit 1
 LOG=results/sweep_thu.log
 run() {  # config name overrides...
   local cfg=$1 name=$2; shift 2
+  if grep -q ",${name}_seed0,${name},0," results/runs.csv 2>/dev/null; then
+    echo "--- skip $name (already in results/runs.csv)" | tee -a "$LOG"; return
+  fi
   echo "=== $(date '+%H:%M:%S') $name: $*" | tee -a "$LOG"
   python -m src.train --config "$cfg" --seed 0 --set name="$name" "$@" 2>&1 | grep -E "done:|Error|error" \
     | tee -a "$LOG" || echo "FAILED $name" | tee -a "$LOG"

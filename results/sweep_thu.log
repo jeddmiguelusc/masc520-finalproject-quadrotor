@@ -1,0 +1,44 @@
+### start Thu Nov 26 11:48:36 PST 2026 git b6d8cc7
+=== 11:48:36 m1_mlp_sw1: train.weight_decay=1e-2
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 11:48:37 m1_mlp_sw2: train.weight_decay=1e-1
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 11:48:38 m1_mlp_sw3: model.dropout=0.1
+[m1_mlp_sw3_seed0] done: early_stop, best epoch 33, val F 0.6009 N, M 0.01375 N·m, 62s -> runs.csv
+=== 11:49:41 m1_mlp_sw4: model.dropout=0.2
+[m1_mlp_sw4_seed0] done: early_stop, best epoch 42, val F 0.7569 N, M 0.01460 N·m, 75s -> runs.csv
+=== 11:50:58 m1_mlp_sw5: model.input_noise=0.05
+[m1_mlp_sw5_seed0] done: early_stop, best epoch 20, val F 0.5256 N, M 0.01412 N·m, 42s -> runs.csv
+=== 11:51:40 m1_mlp_sw6: model.input_noise=0.1
+[m1_mlp_sw6_seed0] done: early_stop, best epoch 15, val F 0.5342 N, M 0.01488 N·m, 34s -> runs.csv
+=== 11:52:15 m1_mlp_sw7: model.dropout=0.1 model.input_noise=0.05 train.weight_decay=1e-2
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 11:52:16 m2_hybrid_mlp_sw1: train.weight_decay=1e-2
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 11:52:18 m2_hybrid_mlp_sw2: train.weight_decay=1e-1
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 11:52:20 m2_hybrid_mlp_sw3: model.dropout=0.1
+[m2_hybrid_mlp_sw3_seed0] done: early_stop, best epoch 37, val F 0.4091 N, M 0.01402 N·m, 106s -> runs.csv
+=== 11:54:06 m2_hybrid_mlp_sw4: model.dropout=0.2
+[m2_hybrid_mlp_sw4_seed0] done: early_stop, best epoch 56, val F 0.4207 N, M 0.01463 N·m, 150s -> runs.csv
+=== 11:56:37 m2_hybrid_mlp_sw5: model.input_noise=0.05
+[m2_hybrid_mlp_sw5_seed0] done: early_stop, best epoch 15, val F 0.4127 N, M 0.01401 N·m, 53s -> runs.csv
+=== 11:57:31 m2_hybrid_mlp_sw6: model.input_noise=0.1
+[m2_hybrid_mlp_sw6_seed0] done: early_stop, best epoch 15, val F 0.4167 N, M 0.01425 N·m, 53s -> runs.csv
+=== 11:58:25 m2_hybrid_mlp_sw7: model.dropout=0.1 model.input_noise=0.05 train.weight_decay=1e-2
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 11:58:27 m3_hybrid_tcn_sw1: train.weight_decay=1e-2
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 11:58:28 m3_hybrid_tcn_sw2: model.dropout=0.1
+[m3_hybrid_tcn_sw2_seed0] done: early_stop, best epoch 58, val F 0.3693 N, M 0.00685 N·m, 376s -> runs.csv
+=== 12:04:45 m3_hybrid_tcn_sw3: model.input_noise=0.05
+[m3_hybrid_tcn_sw3_seed0] done: early_stop, best epoch 58, val F 0.3597 N, M 0.00917 N·m, 353s -> runs.csv
+=== 12:10:39 m3_hybrid_tcn_sw4: model.dropout=0.1 model.input_noise=0.05 train.weight_decay=1e-2
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 12:10:41 m3_hybrid_tcn_sw5: train.batch_size=4096 train.lr=2e-3
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 12:10:43 m3_hybrid_tcn_sw6: train.lr=3e-4
+TypeError: '<=' not supported between instances of 'float' and 'str'
+=== 12:10:44 m3_hybrid_tcn_sw7: train.max_epochs=150 train.patience=15
+[m3_hybrid_tcn_sw7_seed0] done: early_stop, best epoch 76, val F 0.3074 N, M 0.00520 N·m, 485s -> runs.csv
+### end Thu Nov 26 12:18:50 PST 2026
