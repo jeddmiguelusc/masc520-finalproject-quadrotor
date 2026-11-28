@@ -1,0 +1,84 @@
+[predcache] predicted m3_ens_seed0 on A_val (337,432 samples)
+[predcache] predicted m3_ens_seed1 on A_val (337,432 samples)
+[predcache] predicted m3_ens_seed2 on A_val (337,432 samples)
+[M3ens -> A_val] F all: rmse 0.1554 sigma_rms 0.1665 (alea 0.1537, epi 0.06406, epi share 0.15)  NLL -1.039 mix -1.039  cov2s 0.948 [0.920,0.968]  cov90 0.908  miscal 0.041
+[M3ens -> A_val] F le5: rmse 0.08364 sigma_rms 0.09085 (alea 0.08474, epi 0.03276, epi share 0.13)  NLL -1.503 mix -1.500  cov2s 0.948 [0.908,0.973]  cov90 0.911  miscal 0.052
+[M3ens -> A_val] F gt5: rmse 0.2298 sigma_rms 0.2456 (alea 0.2261, epi 0.09578, epi share 0.15)  NLL -0.264 mix -0.267  cov2s 0.948 [0.917,0.966]  cov90 0.903  miscal 0.023
+        F sigma ratio gt5/le5 2.70 [2.12,4.05]  rho(speed,sigma) 0.89
+        F mean sigma by speed: 0-2 0.04589  2-5 0.1003  5-8 0.1591  8-11 0.2035  11-14 0.2624  >14 0.4622
+[M3ens -> A_val] M all: rmse 0.002618 sigma_rms 0.00349 (alea 0.003326, epi 0.001057, epi share 0.09)  NLL -5.254 mix -5.254  cov2s 0.956 [0.953,0.958]  cov90 0.910  miscal 0.025
+[M3ens -> A_val] M le5: rmse 0.001503 sigma_rms 0.002143 (alea 0.002075, epi 0.0005361, epi share 0.06)  NLL -5.646 mix -5.646  cov2s 0.953 [0.950,0.956]  cov90 0.907  miscal 0.023
+[M3ens -> A_val] M gt5: rmse 0.003814 sigma_rms 0.004987 (alea 0.004729, epi 0.001584, epi share 0.10)  NLL -4.599 mix -4.599  cov2s 0.959 [0.956,0.962]  cov90 0.915  miscal 0.028
+        M sigma ratio gt5/le5 2.33 [1.65,3.78]  rho(speed,sigma) 0.82
+        M mean sigma by speed: 0-2 0.0008358  2-5 0.00156  5-8 0.002564  8-11 0.003011  11-14 0.003832  >14 0.009564
+   check vs val_uncertainty_final.json F: sigma_rms 0.1665 vs 0.1665, cov90 0.9081 vs 0.9082 -> OK
+   check vs val_uncertainty_final.json M: sigma_rms 0.0034897 vs 0.0034897, cov90 0.9098 vs 0.9098 -> OK
+[predcache] predicted m3_ens_tuned_seed0 on A_val (337,432 samples)
+[predcache] predicted m3_ens_tuned_seed1 on A_val (337,432 samples)
+[predcache] predicted m3_ens_tuned_seed2 on A_val (337,432 samples)
+[M3ens_tuned -> A_val] F all: rmse 0.1783 sigma_rms 0.2021 (alea 0.1864, epi 0.07804, epi share 0.15)  NLL -0.962 mix -0.964  cov2s 0.955 [0.930,0.973]  cov90 0.918  miscal 0.051
+[M3ens_tuned -> A_val] F le5: rmse 0.09273 sigma_rms 0.106 (alea 0.09758, epi 0.04137, epi share 0.15)  NLL -1.429 mix -1.429  cov2s 0.954 [0.917,0.976]  cov90 0.919  miscal 0.060
+[M3ens_tuned -> A_val] F gt5: rmse 0.2657 sigma_rms 0.3007 (alea 0.2775, epi 0.1158, epi share 0.15)  NLL -0.183 mix -0.185  cov2s 0.957 [0.929,0.973]  cov90 0.918  miscal 0.034
+        F sigma ratio gt5/le5 2.84 [2.17,4.45]  rho(speed,sigma) 0.90
+        F mean sigma by speed: 0-2 0.05055  2-5 0.1141  5-8 0.1843  8-11 0.2352  11-14 0.3012  >14 0.6179
+[M3ens_tuned -> A_val] M all: rmse 0.002787 sigma_rms 0.0047 (alea 0.00455, epi 0.001178, epi share 0.06)  NLL -5.199 mix -5.199  cov2s 0.956 [0.954,0.959]  cov90 0.912  miscal 0.029
+[M3ens_tuned -> A_val] M le5: rmse 0.001568 sigma_rms 0.003745 (alea 0.003704, epi 0.0005504, epi share 0.02)  NLL -5.597 mix -5.597  cov2s 0.954 [0.951,0.957]  cov90 0.908  miscal 0.026
+[M3ens_tuned -> A_val] M gt5: rmse 0.004081 sigma_rms 0.005967 (alea 0.005692, epi 0.00179, epi share 0.09)  NLL -4.532 mix -4.533  cov2s 0.961 [0.956,0.964]  cov90 0.918  miscal 0.033
+        M sigma ratio gt5/le5 1.59 [1.09,3.31]  rho(speed,sigma) 0.83
+        M mean sigma by speed: 0-2 0.0008908  2-5 0.001719  5-8 0.002764  8-11 0.003234  11-14 0.004191  >14 0.01168
+   check vs val_uncertainty_final.json F: sigma_rms 0.20212 vs 0.20212, cov90 0.9183 vs 0.9183 -> OK
+   check vs val_uncertainty_final.json M: sigma_rms 0.0047004 vs 0.0047004, cov90 0.9119 vs 0.9120 -> OK
+[predcache] predicted m3_ens_Bs_seed0 on A_val (337,432 samples)
+[predcache] predicted m3_ens_Bs_seed1 on A_val (337,432 samples)
+[predcache] predicted m3_ens_Bs_seed2 on A_val (337,432 samples)
+[M3ens_Bs -> A_val] F all: rmse 0.8112 sigma_rms 0.4723 (alea 0.3292, epi 0.3387, epi share 0.51)  NLL -0.540 mix +32.503  cov2s 0.904 [0.872,0.929]  cov90 0.852  miscal 0.017
+[M3ens_Bs -> A_val] F le5: rmse 0.098 sigma_rms 0.105 (alea 0.09611, epi 0.04217, epi share 0.16)  NLL -1.455 mix -1.457  cov2s 0.940 [0.890,0.969]  cov90 0.901  miscal 0.043
+[M3ens_Bs -> A_val] F gt5: rmse 1.32 sigma_rms 0.7602 (alea 0.5237, epi 0.5511, epi share 0.53)  NLL +0.990 mix +89.335  cov2s 0.844 [0.817,0.874]  cov90 0.769  miscal 0.089
+        F sigma ratio gt5/le5 7.24 [5.33,11.62]  rho(speed,sigma) 0.91
+        F mean sigma by speed: 0-2 0.04638  2-5 0.1091  5-8 0.2423  8-11 0.4583  11-14 0.792  >14 1.51
+[M3ens_Bs -> A_val] M all: rmse 0.004274 sigma_rms 0.007253 (alea 0.006182, epi 0.003793, epi share 0.27)  NLL -5.040 mix -5.012  cov2s 0.961 [0.958,0.964]  cov90 0.920  miscal 0.042
+[M3ens_Bs -> A_val] M le5: rmse 0.001601 sigma_rms 0.002789 (alea 0.002685, epi 0.0007538, epi share 0.07)  NLL -5.629 mix -5.628  cov2s 0.955 [0.953,0.958]  cov90 0.909  miscal 0.024
+[M3ens_Bs -> A_val] M gt5: rmse 0.006675 sigma_rms 0.0113 (alea 0.009493, epi 0.006125, epi share 0.29)  NLL -4.056 mix -3.980  cov2s 0.971 [0.966,0.975]  cov90 0.939  miscal 0.070
+        M sigma ratio gt5/le5 4.05 [2.64,9.13]  rho(speed,sigma) 0.86
+        M mean sigma by speed: 0-2 0.000852  2-5 0.001727  5-8 0.00351  8-11 0.006222  11-14 0.01084  >14 0.02773
+   check vs val_uncertainty_final.json F: sigma_rms 0.47232 vs 0.47232, cov90 0.8517 vs 0.8517 -> OK
+   check vs val_uncertainty_final.json M: sigma_rms 0.0072532 vs 0.0072532, cov90 0.9202 vs 0.9203 -> OK
+[predcache] predicted m3_ens_Bs_seed0 on B_s_val (209,108 samples)
+[predcache] predicted m3_ens_Bs_seed1 on B_s_val (209,108 samples)
+[predcache] predicted m3_ens_Bs_seed2 on B_s_val (209,108 samples)
+[M3ens_Bs -> B_s_val] F all: rmse 0.08966 sigma_rms 0.09756 (alea 0.08932, epi 0.03923, epi share 0.16)  NLL -1.470 mix -1.472  cov2s 0.940 [0.890,0.969]  cov90 0.901  miscal 0.043
+[M3ens_Bs -> B_s_val] F le5: rmse 0.08966 sigma_rms 0.09756 (alea 0.08932, epi 0.03923, epi share 0.16)  NLL -1.470 mix -1.472  cov2s 0.940 [0.890,0.969]  cov90 0.901  miscal 0.043
+        F mean sigma by speed: 0-2 0.04638  2-5 0.1036
+[M3ens_Bs -> B_s_val] M all: rmse 0.00143 sigma_rms 0.002339 (alea 0.002245, epi 0.0006545, epi share 0.08)  NLL -5.644 mix -5.643  cov2s 0.955 [0.953,0.958]  cov90 0.909  miscal 0.024
+[M3ens_Bs -> B_s_val] M le5: rmse 0.00143 sigma_rms 0.002339 (alea 0.002245, epi 0.0006545, epi share 0.08)  NLL -5.644 mix -5.643  cov2s 0.955 [0.953,0.958]  cov90 0.909  miscal 0.024
+        M mean sigma by speed: 0-2 0.000852  2-5 0.001582
+   check vs val_uncertainty_final.json F: sigma_rms 0.097557 vs 0.097557, cov90 0.9012 vs 0.9012 -> OK
+   check vs val_uncertainty_final.json M: sigma_rms 0.0023386 vs 0.0023386, cov90 0.9092 vs 0.9092 -> OK
+[predcache] predicted m3_ens_Bs_tuned_seed0 on A_val (337,432 samples)
+[predcache] predicted m3_ens_Bs_tuned_seed1 on A_val (337,432 samples)
+[predcache] predicted m3_ens_Bs_tuned_seed2 on A_val (337,432 samples)
+[M3ens_tuned_Bs -> A_val] F all: rmse 0.7475 sigma_rms 0.4342 (alea 0.3712, epi 0.2253, epi share 0.27)  NLL -0.515 mix -0.131  cov2s 0.911 [0.883,0.934]  cov90 0.861  miscal 0.019
+[M3ens_tuned_Bs -> A_val] F le5: rmse 0.1107 sigma_rms 0.1185 (alea 0.1087, epi 0.04713, epi share 0.16)  NLL -1.412 mix -1.417  cov2s 0.948 [0.904,0.974]  cov90 0.911  miscal 0.052
+[M3ens_tuned_Bs -> A_val] F gt5: rmse 1.214 sigma_rms 0.6933 (alea 0.5905, epi 0.3633, epi share 0.27)  NLL +0.985 mix +2.022  cov2s 0.848 [0.824,0.875]  cov90 0.775  miscal 0.077
+        F sigma ratio gt5/le5 5.85 [4.22,9.72]  rho(speed,sigma) 0.92
+        F mean sigma by speed: 0-2 0.04999  2-5 0.1205  5-8 0.2549  8-11 0.4602  11-14 0.7709  >14 1.663
+[M3ens_tuned_Bs -> A_val] M all: rmse 0.005033 sigma_rms 0.006612 (alea 0.005197, epi 0.004087, epi share 0.38)  NLL -4.982 mix -4.952  cov2s 0.961 [0.959,0.964]  cov90 0.920  miscal 0.039
+[M3ens_tuned_Bs -> A_val] M le5: rmse 0.001705 sigma_rms 0.002677 (alea 0.002551, epi 0.0008121, epi share 0.09)  NLL -5.597 mix -5.597  cov2s 0.956 [0.953,0.959]  cov90 0.912  miscal 0.028
+[M3ens_tuned_Bs -> A_val] M gt5: rmse 0.007928 sigma_rms 0.01024 (alea 0.007831, epi 0.0066, epi share 0.42)  NLL -3.952 mix -3.874  cov2s 0.970 [0.965,0.974]  cov90 0.935  miscal 0.058
+        M sigma ratio gt5/le5 3.83 [2.70,7.74]  rho(speed,sigma) 0.86
+        M mean sigma by speed: 0-2 0.0008826  2-5 0.00181  5-8 0.003781  8-11 0.00693  11-14 0.01173  >14 0.02135
+   check vs val_uncertainty_final.json F: sigma_rms 0.43425 vs 0.43425, cov90 0.8605 vs 0.8605 -> OK
+   check vs val_uncertainty_final.json M: sigma_rms 0.0066118 vs 0.0066118, cov90 0.9202 vs 0.9202 -> OK
+[predcache] predicted m3_ens_Bs_tuned_seed0 on B_s_val (209,108 samples)
+[predcache] predicted m3_ens_Bs_tuned_seed1 on B_s_val (209,108 samples)
+[predcache] predicted m3_ens_Bs_tuned_seed2 on B_s_val (209,108 samples)
+[M3ens_tuned_Bs -> B_s_val] F all: rmse 0.1013 sigma_rms 0.1086 (alea 0.0992, epi 0.04421, epi share 0.17)  NLL -1.427 mix -1.432  cov2s 0.948 [0.903,0.974]  cov90 0.912  miscal 0.053
+[M3ens_tuned_Bs -> B_s_val] F le5: rmse 0.1013 sigma_rms 0.1086 (alea 0.0992, epi 0.04421, epi share 0.17)  NLL -1.427 mix -1.432  cov2s 0.948 [0.903,0.974]  cov90 0.912  miscal 0.053
+        F mean sigma by speed: 0-2 0.04999  2-5 0.1141
+[M3ens_tuned_Bs -> B_s_val] M all: rmse 0.001516 sigma_rms 0.002263 (alea 0.002147, epi 0.000715, epi share 0.10)  NLL -5.613 mix -5.612  cov2s 0.956 [0.953,0.959]  cov90 0.912  miscal 0.028
+[M3ens_tuned_Bs -> B_s_val] M le5: rmse 0.001516 sigma_rms 0.002263 (alea 0.002147, epi 0.000715, epi share 0.10)  NLL -5.613 mix -5.612  cov2s 0.956 [0.953,0.959]  cov90 0.912  miscal 0.028
+        M mean sigma by speed: 0-2 0.0008826  2-5 0.001662
+   check vs val_uncertainty_final.json F: sigma_rms 0.10861 vs 0.10861, cov90 0.9117 vs 0.9117 -> OK
+   check vs val_uncertainty_final.json M: sigma_rms 0.0022633 vs 0.0022633, cov90 0.9116 vs 0.9116 -> OK
+[predcache] wrote cache/val_predictions_final.npz (255 MB)
+wrote results/uncertainty_val_final.json (13.9 s)
