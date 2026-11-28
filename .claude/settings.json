@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(python scripts/evaluate_test.py:*)",
+      "Bash(python3 scripts/evaluate_test.py:*)",
+      "Bash(git push --force:*)"
+    ]
+  }
+}
