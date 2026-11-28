@@ -185,6 +185,20 @@ def _row(v, w, q, act):
     return torch.cat([v, w, gravity_body(q), act], -1)
 
 
+def stage_window(hist: list, last: torch.Tensor, tau: float, window: int = WINDOW) -> torch.Tensor:
+    """Model input window for an RK4 stage at t_k + tau*dt (0 < tau <= 1).
+
+    hist[-window:] holds the rows at t_{k-window+1} .. t_k. The window for the stage must end at the
+    stage time and keep the 2.5 ms spacing the model was trained on, so each earlier row is linearly
+    interpolated to t_{k-window+1+j+tau}: (1 - tau) * hist[-window + j] + tau * hist[-window + j + 1],
+    j = 0..window-2, and the newest row is the stage state. tau = 1 gives exactly hist[-(window-1):]
+    + [last]. (Before this fix the earlier rows were not shifted, so at tau = 0.5 the newest interval
+    was 1.25 ms while the others were 2.5 ms; that biased models that use the state history.)"""
+    h = torch.stack(hist[-window:], 1)                      # (B, window, F)
+    prev = (1.0 - tau) * h[:, :-1] + tau * h[:, 1:]         # (B, window-1, F), at t + tau*dt
+    return torch.cat([prev, last.unsqueeze(1)], 1)
+
+
 def rollout(force, ep: Episodes, n_steps: int | None = None, integrator: str = "rk4",
             mode: str = "full", v0=None, w0=None, detach_every: int | None = None) -> dict:
     """Simulate n_steps steps from sample ep.H. Returns simulated and recorded trajectories
@@ -222,8 +236,6 @@ def rollout(force, ep: Episodes, n_steps: int | None = None, integrator: str = "
         qb = torch.where(((qa * qb).sum(-1, keepdim=True) < 0), -qb, qb)
         return quat_normalise((1 - tau) * qa + tau * qb), (1 - tau) * X[:, k, W] + tau * X[:, k + 1, W]
 
-    def window_with(last):
-        return torch.stack(hist[-(WINDOW - 1):] + [last], 1)
 
     for k in range(H, H + n_steps):
         if integrator == "euler":
@@ -243,7 +255,7 @@ def rollout(force, ep: Episodes, n_steps: int | None = None, integrator: str = "
                 if trans:
                     qs, ws = att(k, tau)
                 a = act[:, k] if tau == 0 else (1 - tau) * act[:, k] + tau * act[:, k + 1]
-                win = torch.stack(hist[-WINDOW:], 1) if tau == 0 else window_with(_row(vs, ws, qs, a))
+                win = torch.stack(hist[-WINDOW:], 1) if tau == 0 else stage_window(hist, _row(vs, ws, qs, a), tau)
                 return _derivs(ps, vs, qs, ws, force(win, k, tau), trans)
             k1 = stage(p, v, q, w, 0.0)
             if trans:

@@ -4,6 +4,9 @@
     python scripts/eval_models.py --all                 # every checkpoint + the two H4 ensembles
     python scripts/eval_models.py --runs m3_hybrid_tcn_seed0 m2_hybrid_mlp_seed0
     python scripts/eval_models.py --runs ... --ensemble m3_ens=m3_ens_seed0,m3_ens_seed1,m3_ens_seed2
+    python scripts/eval_models.py --final --out results/val_models_final.json --out-unc results/val_uncertainty_final.json
+        (runs, ensembles, labels and pairs from configs/final_models.yaml; every checkpoint's split,
+         config name and seed checked against it; run names written next to every label and pair)
     -> results/val_models.json       point metrics, CIs, by-speed tables, paired diffs, seed summary
     -> results/val_uncertainty.json  (only with ensembles) H4: sigma vs speed, coverage, aleatoric/epistemic
     (needs results/val_baselines.json for paired comparisons with P0b / B1 / B2)
@@ -35,6 +38,7 @@ from src.data.dataset import load_part, read_splits  # noqa: E402
 from src.data.load import REPO, load_all  # noqa: E402
 from src.eval import metrics as Mx  # noqa: E402
 from src.eval.evaluate import paired, score, scored_rows, short  # noqa: E402
+from src.eval.registry import load_registry  # noqa: E402
 from src.models import build_model  # noqa: E402
 from src.models.ensemble import combine  # noqa: E402
 from src.train import pick_device  # noqa: E402
@@ -199,9 +203,15 @@ def main(argv=None):
     ap.add_argument("--out", default="results/val_models.json")
     ap.add_argument("--out-unc", default="results/val_uncertainty.json")
     ap.add_argument("--device", default="auto")
+    ap.add_argument("--final", action="store_true", help="everything from configs/final_models.yaml")
+    ap.add_argument("--registry", default=None)
     a = ap.parse_args(argv)
+    reg = (load_registry(a.registry) if a.registry else load_registry()) if a.final else None
     ensembles = {k: v.split(",") for k, v in (e.split("=", 1) for e in a.ensemble)}
-    if a.all:
+    if reg is not None:
+        runs = reg.runs()
+        ensembles = reg.ensemble_members()
+    elif a.all:
         runs = discover_runs()
         for k, v in DEFAULT_ENSEMBLES.items():
             tuned = [r.replace("_seed", "_tuned_seed") for r in v]
@@ -219,14 +229,20 @@ def main(argv=None):
     cache, preds = {}, {}
     out = {"source": "scripts/eval_models.py", "splits_sha256": splits["meta"]["sha256"],
            "metric_definition": base["metric_definition"], "device": str(device), "runs": {},
-           "ensembles": {}, "paired": [], "seed_summary": {}}
+           "ensembles": {}, "paired": [], "seed_summary": {},
+           "registry": reg.info() if reg is not None else None}
     table = {}                         # (split, eval set, label, seed) -> score
+    table_run = {}                     # same key -> run name (or ensemble name): written next to every pair
     for run in runs:
         ck = torch.load(REPO / "checkpoints" / run / "best.pt", map_location=device, weights_only=False)
         cfg = ck["config"]
         key = cfg["data"]["split"]
+        if reg is not None:
+            reg.check_checkpoint(run, cfg)
         model = build_model(cfg["model"]); model.load_state_dict(ck["model"]); model.to(device).eval()
         label = LABEL.get(base_name(cfg.get("name", "")), cfg.get("name", run))
+        if reg is not None:
+            label = reg.label_of(run) if run in reg._label else f"member:{run}"   # ensemble-only members
         seed = int(cfg.get("seed", run_seed(run)))
         res = {"split": key, "label": label, "seed": seed, "config_name": cfg.get("name"), "eval": {}}
         for k, p in EVAL_SETS[key]:
@@ -237,7 +253,11 @@ def main(argv=None):
             P, V = predict(model, rows, int(cfg["data"]["max_window"]), device)
             preds[(run, name)] = (P, V)
             res["eval"][name] = sc = score(rows, P)
+            if (key, name, label, seed) in table and table_run[(key, name, label, seed)] != run:
+                raise ValueError(f"{run} and {table_run[(key, name, label, seed)]} both map to "
+                                 f"label {label} seed {seed} on {key}: give them different labels")
             table[(key, name, label, seed)] = sc
+            table_run[(key, name, label, seed)] = run
             print(f"[{run} -> {name}] {short(sc)}")
             if sc["gt5"]["n"]:
                 print(f"{'':>{len(run) + len(name) + 6}} |v|>5: {short(sc, 'gt5')}")
@@ -252,7 +272,10 @@ def main(argv=None):
     unc = {"source": "scripts/eval_models.py", "splits_sha256": splits["meta"]["sha256"], "ensembles": {}}
     for ename, members in ensembles.items():
         key = out["runs"][members[0]]["split"]
-        e_res = {"split": key, "members": members, "eval": {}}
+        if any(out["runs"][r]["split"] != key for r in members):
+            raise ValueError(f"ensemble {ename}: members trained on different splits")
+        e_label = ename if reg is not None else "M3ens"
+        e_res = {"split": key, "label": e_label, "members": members, "eval": {}}
         unc["ensembles"][ename] = {"split": key, "members": members, "eval": {}}
         for k, p in EVAL_SETS[key]:
             name = f"{k}_{p}"
@@ -262,7 +285,10 @@ def main(argv=None):
                         [None if v is None else torch.from_numpy(v) for _, v in mv])
             ens = {kk: vv.numpy() for kk, vv in c.items()}
             e_res["eval"][name] = sc = score(rows, ens["mean"])
-            table[(key, name, "M3ens", 0)] = sc
+            if (key, name, e_label, 0) in table and table_run[(key, name, e_label, 0)] != ename:
+                raise ValueError(f"ensembles {ename} and {table_run[(key, name, e_label, 0)]} share label {e_label}")
+            table[(key, name, e_label, 0)] = sc
+            table_run[(key, name, e_label, 0)] = ename
             unc["ensembles"][ename]["eval"][name] = u = uncertainty_stats(rows, ens)
             print(f"[ensemble {ename} -> {name}] {short(sc)}")
             for grp in ("F", "M"):
@@ -276,22 +302,26 @@ def main(argv=None):
 
     # ---- paired diffs (seed-matched; baselines and ensembles are seed-free)
     seeds_present = sorted({s for (_, _, _, s) in table})
-    for key, name, la, lb, sub in PAIRS:
+    pairs = PAIRS if reg is None else [(sp, ev, la, lb, sub) for sp, lst in reg.pairs_1step.items()
+                                       for la, lb, ev, sub in lst]
+    seed_free = {"M3ens"} if reg is None else set(reg.ensembles)
+    for key, name, la, lb, sub in pairs:
         for s in seeds_present:
             def get(lab):
                 if (key, name, lab, s) in table:
-                    return table[(key, name, lab, s)]
-                if lab == "M3ens" and (key, name, lab, 0) in table:
-                    return table[(key, name, lab, 0)]
-                return base["splits"][key]["eval"].get(name, {}).get(lab)
-            A_, B_ = get(la), get(lb)
-            if A_ is None or B_ is None or (la == "M3ens" and lb == "M3ens"):
+                    return table[(key, name, lab, s)], table_run[(key, name, lab, s)]
+                if lab in seed_free and (key, name, lab, 0) in table:
+                    return table[(key, name, lab, 0)], table_run[(key, name, lab, 0)]
+                b = base["splits"][key]["eval"].get(name, {}).get(lab)
+                return (b, f"baseline:{lab}") if b is not None else (None, None)
+            (A_, ra), (B_, rb) = get(la), get(lb)
+            if A_ is None or B_ is None or (la in seed_free and lb in seed_free):
                 continue
-            if s > 0 and not any((key, name, lab, s) in table for lab in (la, lb)):
+            if s > 0 and not any((key, name, lab, s) in table for lab in (la, lb) if lab not in seed_free):
                 continue                  # both sides seed-free: already done at seed 0
             d = paired(A_, B_, sub)
-            out["paired"].append({"split": key, "eval": name, "a": la, "b": lb, "subset": sub, "seed": s,
-                                  "diff_ci95_p": d})
+            out["paired"].append({"split": key, "eval": name, "a": la, "b": lb, "a_run": ra, "b_run": rb,
+                                  "subset": sub, "seed": s, "diff_ci95_p": d})
             print(f"paired [{key} -> {name}, {sub}, seed {s}] {la} - {lb}: F {d['F'][0]:+.3f} "
                   f"[{d['F'][1]:+.3f},{d['F'][2]:+.3f}] N (p={d['F'][3]:.3f})  M {d['M'][0]:+.4f} "
                   f"[{d['M'][1]:+.4f},{d['M'][2]:+.4f}] (p={d['M'][3]:.3f})")

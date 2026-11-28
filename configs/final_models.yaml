@@ -1,0 +1,95 @@
+# Final model registry: the ONE place that says which checkpoints a label means (review fix, Nov 28).
+#
+# Read by (with --final):  scripts/eval_models.py, scripts/eval_rollout.py, scripts/eval_rollout_horizons.py,
+# and by scripts/evaluate_test.py (CP7). Every output written in --final mode carries the run names next to
+# each label, so a poster number can always be traced to its checkpoints.
+#
+# Labels are unique across splits and never reused for a different config: the default and the tuned
+# version of a config always have different labels (M3 vs M3tuned).
+#
+# PENDING JEDD: default vs tuned for the final M3 and ensemble. The Nov 26 proposal (Wed default for M3
+# and the ensemble, tuned for M1 / M2) is filled in under `headline`. To switch, edit `headline` only;
+# both versions stay in `models` / `ensembles`, so all comparisons remain available.
+
+models:
+  # ---- split A (trained on A/train, scored on A/val; A/test at CP7)
+  M1:            {split: A, runs: [m1_mlp_tuned_seed0, m1_mlp_tuned_seed1, m1_mlp_tuned_seed2]}
+  M2:            {split: A, runs: [m2_hybrid_mlp_tuned_seed0, m2_hybrid_mlp_tuned_seed1, m2_hybrid_mlp_tuned_seed2]}
+  M3:            {split: A, runs: [m3_hybrid_tcn_seed0, m3_hybrid_tcn_seed1, m3_hybrid_tcn_seed2]}                      # Wed default config
+  M3tuned:       {split: A, runs: [m3_hybrid_tcn_tuned_seed0, m3_hybrid_tcn_tuned_seed1, m3_hybrid_tcn_tuned_seed2]}
+  M3act:         {split: A, runs: [m3_hybrid_tcn_act_seed0, m3_hybrid_tcn_act_seed1, m3_hybrid_tcn_act_seed2]}          # default config: matched ablation of M3
+  M3act_tuned:   {split: A, runs: [m3_hybrid_tcn_act_tuned_seed0, m3_hybrid_tcn_act_tuned_seed1, m3_hybrid_tcn_act_tuned_seed2]}  # matched with M3tuned
+  M3nll:         {split: A, runs: [m3_ens_seed0, m3_ens_seed1, m3_ens_seed2]}                                         # ensemble members, one at a time
+  M3nll_tuned:   {split: A, runs: [m3_ens_tuned_seed0, m3_ens_tuned_seed1, m3_ens_tuned_seed2]}
+  M4:            {split: A, runs: [m4_hybrid_transformer_seed0, m4_hybrid_transformer_seed1, m4_hybrid_transformer_seed2]}  # exploratory: not swept
+  M2roll:        {split: A, runs: [m2_hybrid_mlp_rollft_seed0, m2_hybrid_mlp_rollft_seed1, m2_hybrid_mlp_rollft_seed2]}  # exploratory: selection starts share flights with eval starts
+  # ---- split B_s (trained on |v| <= 5 samples; H1 view = A/val samples with |v| > 5)
+  M1_Bs:         {split: B_s, runs: [m1_mlp_Bs_tuned_seed0, m1_mlp_Bs_tuned_seed1, m1_mlp_Bs_tuned_seed2]}
+  M2_Bs:         {split: B_s, runs: [m2_hybrid_mlp_Bs_tuned_seed0, m2_hybrid_mlp_Bs_tuned_seed1, m2_hybrid_mlp_Bs_tuned_seed2]}
+  M3_Bs:         {split: B_s, runs: [m3_hybrid_tcn_Bs_seed0]}                                                          # Wed default config, 1 seed
+  M3tuned_Bs:    {split: B_s, runs: [m3_hybrid_tcn_Bs_tuned_seed0, m3_hybrid_tcn_Bs_tuned_seed1, m3_hybrid_tcn_Bs_tuned_seed2]}
+
+ensembles:     # mean (and Gaussian-mixture variance) of the members; seed-free
+  M3ens:          {split: A,   members: [m3_ens_seed0, m3_ens_seed1, m3_ens_seed2]}
+  M3ens_tuned:    {split: A,   members: [m3_ens_tuned_seed0, m3_ens_tuned_seed1, m3_ens_tuned_seed2]}
+  M3ens_Bs:       {split: B_s, members: [m3_ens_Bs_seed0, m3_ens_Bs_seed1, m3_ens_Bs_seed2]}
+  M3ens_tuned_Bs: {split: B_s, members: [m3_ens_Bs_tuned_seed0, m3_ens_Bs_tuned_seed1, m3_ens_Bs_tuned_seed2]}
+
+# What goes in the main poster / report table (baselines P0a, P0b, B1, B2 and the rollout oracle are always shown).
+headline:
+  A:   [M1, M2, M3, M3ens]
+  B_s: [M1_Bs, M2_Bs]
+  rollout: [M1, M2, M3, M3ens]
+
+# One-step paired comparisons (scripts/eval_models.py): [a, b, eval set, subset]; a - b, negative = a better.
+# Baseline names (P0b, B1, B2) refer to the split's own baselines in results/val_baselines.json.
+pairs_1step:
+  A:
+    - [M2, M1, A_val, all]
+    - [M2, M1, A_val, gt5]
+    - [M2, P0b, A_val, all]
+    - [M1, B1, A_val, all]
+    - [M3, M2, A_val, all]
+    - [M3, M2, A_val, gt5]
+    - [M3, B1, A_val, all]
+    - [M3, B2, A_val, all]
+    - [M3tuned, M3, A_val, all]
+    - [M3nll, M3, A_val, all]
+    - [M3ens, M3, A_val, all]
+    - [M3ens_tuned, M3ens, A_val, all]
+    - [M3act, M3, A_val, all]               # matched configs (default vs default)
+    - [M3act_tuned, M3tuned, A_val, all]    # matched configs (tuned vs tuned)
+    - [M3act, M2, A_val, all]
+    - [M3act, B2, A_val, all]
+    - [M4, M3, A_val, all]
+    - [M2roll, M2, A_val, all]
+  B_s:
+    - [M2_Bs, M1_Bs, B_s_val, all]
+    - [M2_Bs, M1_Bs, A_val, all]
+    - [M2_Bs, M1_Bs, A_val, gt5]
+    - [M2_Bs, P0b, A_val, gt5]
+    - [M1_Bs, B1, A_val, gt5]
+    - [M3_Bs, M2_Bs, A_val, gt5]
+    - [M3tuned_Bs, M2_Bs, A_val, gt5]
+    - [M3_Bs, P0b, A_val, gt5]
+    - [M3ens_Bs, M3_Bs, A_val, gt5]
+
+# Rollout paired comparisons (scripts/eval_rollout_horizons.py: median; scripts/eval_rollout.py: RMS vs M2),
+# split A only. Every model is ALSO paired against the oracle (excess over the oracle floor).
+pairs_rollout:
+  - [M2, M1]
+  - [M2, P0b]
+  - [M3, M2]
+  - [M3tuned, M2]
+  - [M3tuned, M3]
+  - [M3act, M3]
+  - [M3act, M2]
+  - [M3act_tuned, M3tuned]
+  - [M4, M3]
+  - [M3ens, M3]
+  - [M3ens, M2]
+  - [M3ens_tuned, M3tuned]
+  - [M3ens_tuned, M2]
+  - [M2roll, M2]
+  - [M3, P0b]
+rollout_reference: M2     # eval_rollout.py paired RMS reference

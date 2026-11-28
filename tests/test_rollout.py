@@ -233,3 +233,49 @@ def test_model_window_matches_training_windows(val_piece, p0b):
     seen = []
     R.rollout(lambda win, k, tau: (seen.append(win) or m(win)[0]), ep, 1, "euler", "full")
     assert torch.allclose(seen[0], ep.feats[:, :R.WINDOW], atol=1e-4)
+
+
+# ---------------------------------------------------------------- RK4 stage windows (review fix, Nov 28)
+def test_stage_window_interpolates_history_to_stage_time():
+    """Rows that are linear in time stay linear and 1-dt apart for every tau; tau = 1 is the plain shift."""
+    B, F, W = 2, 18, R.WINDOW
+    t = torch.arange(W, dtype=torch.float64)                       # t_{k-W+1} .. t_k in units of dt
+    rows = [torch.full((B, F), float(x), dtype=torch.float64) for x in t]
+    for tau in (0.5, 1.0):
+        last = torch.full((B, F), float(t[-1]) + tau, dtype=torch.float64)
+        win = R.stage_window(rows, last, tau)
+        assert win.shape == (B, W, F)
+        assert torch.allclose(win[:, :, 0], (t + tau).expand(B, W))
+        assert torch.allclose(win.diff(dim=1), torch.ones(B, W - 1, F, dtype=torch.float64))
+    win1 = R.stage_window(rows, last, 1.0)
+    assert torch.equal(win1, torch.stack(rows[1:] + [last], 1))
+
+
+class WindowSpy:
+    """Constant body force that records every input window it is given."""
+
+    def __init__(self, fm):
+        self.fm = torch.as_tensor(fm, dtype=torch.float64)
+        self.wins = []
+
+    def __call__(self, win, k, tau):
+        self.wins.append((tau, win.detach().clone()))
+        return self.fm.expand(win.shape[0], 6).to(win.dtype)
+
+
+@pytest.mark.parametrize("mode", ["full", "translational"])
+def test_rk4_stage_windows_are_uniformly_spaced(mode):
+    """Constant acceleration a along body x with a recorded velocity ramp: every window the model sees,
+    at every RK4 stage, has velocity steps of exactly a*dt (the old code gave a*dt/2 at tau = 0.5)."""
+    a = 2.0
+    ep = make_episode(B=1)
+    T = ep.feats.shape[1]
+    ep.feats[:, :, R.V.start if isinstance(R.V, slice) else R.V[0]] = a * (torch.arange(T, dtype=torch.float64) - ep.H) * R.DT
+    spy = WindowSpy([MASS * a, 0, MASS * G, 0, 0, 0])
+    R.rollout(spy, ep, 5, "rk4", mode)
+    taus = {tau for tau, _ in spy.wins}
+    assert taus == {0.0, 0.5, 1.0}
+    vx = R.V.start if isinstance(R.V, slice) else R.V[0]
+    for tau, win in spy.wins:
+        dv = win[0, :, vx].diff()
+        assert torch.allclose(dv, torch.full_like(dv, a * R.DT), atol=1e-12), (tau, dv)

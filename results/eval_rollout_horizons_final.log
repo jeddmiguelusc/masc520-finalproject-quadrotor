@@ -1,0 +1,124 @@
+A/val: 18 flights, 327432 valid starts for 200 steps; selected 3600 (200-200 per flight); |v0|>5: 1446; device mps; translational, rk4
+[                          oracle] median pos err 0.1s 0.06 cm  0.25s 0.35 cm  0.5s 1.39 cm  (3.5 s)
+[                             P0b] median pos err 0.1s 0.24 cm  0.25s 1.43 cm  0.5s 5.31 cm  (5.3 s)
+[              m1_mlp_tuned_seed0] median pos err 0.1s 0.16 cm  0.25s 0.93 cm  0.5s 3.51 cm  (3.7 s)
+[              m1_mlp_tuned_seed1] median pos err 0.1s 0.17 cm  0.25s 0.96 cm  0.5s 3.56 cm  (3.7 s)
+[              m1_mlp_tuned_seed2] median pos err 0.1s 0.16 cm  0.25s 0.95 cm  0.5s 3.52 cm  (3.7 s)
+[       m2_hybrid_mlp_tuned_seed0] median pos err 0.1s 0.15 cm  0.25s 0.83 cm  0.5s 3.11 cm  (5.6 s)
+[       m2_hybrid_mlp_tuned_seed1] median pos err 0.1s 0.15 cm  0.25s 0.84 cm  0.5s 3.14 cm  (5.7 s)
+[       m2_hybrid_mlp_tuned_seed2] median pos err 0.1s 0.15 cm  0.25s 0.84 cm  0.5s 3.15 cm  (5.7 s)
+[             m3_hybrid_tcn_seed0] median pos err 0.1s 0.11 cm  0.25s 0.69 cm  0.5s 2.80 cm  (7.7 s)
+[             m3_hybrid_tcn_seed1] median pos err 0.1s 0.12 cm  0.25s 0.73 cm  0.5s 2.91 cm  (7.6 s)
+[             m3_hybrid_tcn_seed2] median pos err 0.1s 0.12 cm  0.25s 0.72 cm  0.5s 2.87 cm  (7.5 s)
+[       m3_hybrid_tcn_tuned_seed0] median pos err 0.1s 0.12 cm  0.25s 0.74 cm  0.5s 2.87 cm  (7.5 s)
+[       m3_hybrid_tcn_tuned_seed1] median pos err 0.1s 0.14 cm  0.25s 0.82 cm  0.5s 3.11 cm  (7.5 s)
+[       m3_hybrid_tcn_tuned_seed2] median pos err 0.1s 0.13 cm  0.25s 0.79 cm  0.5s 3.08 cm  (7.5 s)
+[         m3_hybrid_tcn_act_seed0] median pos err 0.1s 0.15 cm  0.25s 0.83 cm  0.5s 3.06 cm  (7.6 s)
+[         m3_hybrid_tcn_act_seed1] median pos err 0.1s 0.15 cm  0.25s 0.83 cm  0.5s 3.13 cm  (7.6 s)
+[         m3_hybrid_tcn_act_seed2] median pos err 0.1s 0.15 cm  0.25s 0.83 cm  0.5s 3.13 cm  (7.6 s)
+[   m3_hybrid_tcn_act_tuned_seed0] median pos err 0.1s 0.15 cm  0.25s 0.87 cm  0.5s 3.27 cm  (7.6 s)
+[   m3_hybrid_tcn_act_tuned_seed1] median pos err 0.1s 0.15 cm  0.25s 0.87 cm  0.5s 3.25 cm  (7.6 s)
+[   m3_hybrid_tcn_act_tuned_seed2] median pos err 0.1s 0.16 cm  0.25s 0.87 cm  0.5s 3.24 cm  (7.6 s)
+[                    m3_ens_seed0] median pos err 0.1s 0.11 cm  0.25s 0.66 cm  0.5s 2.69 cm  (7.6 s)
+[                    m3_ens_seed1] median pos err 0.1s 0.11 cm  0.25s 0.65 cm  0.5s 2.65 cm  (7.6 s)
+[                    m3_ens_seed2] median pos err 0.1s 0.11 cm  0.25s 0.66 cm  0.5s 2.70 cm  (7.6 s)
+[              m3_ens_tuned_seed0] median pos err 0.1s 0.11 cm  0.25s 0.65 cm  0.5s 2.63 cm  (7.6 s)
+[              m3_ens_tuned_seed1] median pos err 0.1s 0.11 cm  0.25s 0.66 cm  0.5s 2.68 cm  (7.7 s)
+[              m3_ens_tuned_seed2] median pos err 0.1s 0.11 cm  0.25s 0.66 cm  0.5s 2.73 cm  (7.6 s)
+[     m4_hybrid_transformer_seed0] median pos err 0.1s 0.11 cm  0.25s 0.71 cm  0.5s 3.00 cm  (11.6 s)
+[     m4_hybrid_transformer_seed1] median pos err 0.1s 0.11 cm  0.25s 0.73 cm  0.5s 3.07 cm  (11.6 s)
+[     m4_hybrid_transformer_seed2] median pos err 0.1s 0.13 cm  0.25s 0.91 cm  0.5s 4.42 cm  (11.6 s)
+[      m2_hybrid_mlp_rollft_seed0] median pos err 0.1s 0.15 cm  0.25s 0.83 cm  0.5s 3.07 cm  (5.8 s)
+[      m2_hybrid_mlp_rollft_seed1] median pos err 0.1s 0.15 cm  0.25s 0.83 cm  0.5s 3.07 cm  (5.8 s)
+[      m2_hybrid_mlp_rollft_seed2] median pos err 0.1s 0.15 cm  0.25s 0.82 cm  0.5s 3.03 cm  (5.7 s)
+[                           M3ens] median pos err 0.1s 0.11 cm  0.25s 0.64 cm  0.5s 2.58 cm  (17.0 s)
+[                     M3ens_tuned] median pos err 0.1s 0.11 cm  0.25s 0.64 cm  0.5s 2.61 cm  (17.0 s)
+paired [M2 - M1, seed 0, all, 0.25 s] median diff -0.09 cm [-0.13, -0.06] p=0.000 win 0.62
+paired [M2 - M1, seed 1, all, 0.25 s] median diff -0.12 cm [-0.21, -0.06] p=0.000 win 0.61
+paired [M2 - M1, seed 2, all, 0.25 s] median diff -0.11 cm [-0.13, -0.09] p=0.000 win 0.62
+paired [M2 - P0b, seed 0, all, 0.25 s] median diff -0.59 cm [-0.77, -0.48] p=0.000 win 0.75
+paired [M2 - P0b, seed 1, all, 0.25 s] median diff -0.59 cm [-0.77, -0.48] p=0.000 win 0.75
+paired [M2 - P0b, seed 2, all, 0.25 s] median diff -0.59 cm [-0.77, -0.49] p=0.000 win 0.75
+paired [M3 - M2, seed 0, all, 0.25 s] median diff -0.14 cm [-0.22, -0.08] p=0.000 win 0.59
+paired [M3 - M2, seed 1, all, 0.25 s] median diff -0.11 cm [-0.18, -0.05] p=0.000 win 0.60
+paired [M3 - M2, seed 2, all, 0.25 s] median diff -0.11 cm [-0.20, -0.02] p=0.006 win 0.58
+paired [M3tuned - M2, seed 0, all, 0.25 s] median diff -0.10 cm [-0.17, -0.03] p=0.001 win 0.59
+paired [M3tuned - M2, seed 1, all, 0.25 s] median diff -0.02 cm [-0.05, +0.01] p=0.151 win 0.53
+paired [M3tuned - M2, seed 2, all, 0.25 s] median diff -0.05 cm [-0.08, -0.01] p=0.006 win 0.56
+paired [M3tuned - M3, seed 0, all, 0.25 s] median diff +0.05 cm [+0.01, +0.09] p=0.999 win 0.42
+paired [M3tuned - M3, seed 1, all, 0.25 s] median diff +0.09 cm [+0.04, +0.17] p=1.000 win 0.40
+paired [M3tuned - M3, seed 2, all, 0.25 s] median diff +0.07 cm [-0.00, +0.13] p=0.975 win 0.41
+paired [M3act - M3, seed 0, all, 0.25 s] median diff +0.14 cm [+0.08, +0.20] p=1.000 win 0.42
+paired [M3act - M3, seed 1, all, 0.25 s] median diff +0.10 cm [+0.04, +0.18] p=0.999 win 0.40
+paired [M3act - M3, seed 2, all, 0.25 s] median diff +0.11 cm [+0.02, +0.21] p=0.989 win 0.44
+paired [M3act - M2, seed 0, all, 0.25 s] median diff -0.01 cm [-0.03, +0.01] p=0.097 win 0.50
+paired [M3act - M2, seed 1, all, 0.25 s] median diff -0.01 cm [-0.02, +0.01] p=0.172 win 0.52
+paired [M3act - M2, seed 2, all, 0.25 s] median diff -0.01 cm [-0.03, +0.02] p=0.420 win 0.52
+paired [M3act_tuned - M3tuned, seed 0, all, 0.25 s] median diff +0.13 cm [+0.04, +0.21] p=1.000 win 0.40
+paired [M3act_tuned - M3tuned, seed 1, all, 0.25 s] median diff +0.05 cm [+0.01, +0.08] p=0.992 win 0.44
+paired [M3act_tuned - M3tuned, seed 2, all, 0.25 s] median diff +0.08 cm [+0.04, +0.13] p=1.000 win 0.40
+paired [M4 - M3, seed 0, all, 0.25 s] median diff +0.02 cm [-0.00, +0.05] p=0.965 win 0.49
+paired [M4 - M3, seed 1, all, 0.25 s] median diff -0.00 cm [-0.03, +0.03] p=0.551 win 0.52
+paired [M4 - M3, seed 2, all, 0.25 s] median diff +0.19 cm [+0.11, +0.25] p=1.000 win 0.36
+paired [M3ens - M3, seed 0, all, 0.25 s] median diff -0.05 cm [-0.09, -0.00] p=0.025 win 0.52
+paired [M3ens - M3, seed 1, all, 0.25 s] median diff -0.09 cm [-0.14, -0.03] p=0.002 win 0.55
+paired [M3ens - M3, seed 2, all, 0.25 s] median diff -0.08 cm [-0.13, -0.05] p=0.000 win 0.51
+paired [M3ens - M2, seed 0, all, 0.25 s] median diff -0.19 cm [-0.29, -0.11] p=0.000 win 0.59
+paired [M3ens - M2, seed 1, all, 0.25 s] median diff -0.20 cm [-0.30, -0.11] p=0.000 win 0.59
+paired [M3ens - M2, seed 2, all, 0.25 s] median diff -0.19 cm [-0.29, -0.10] p=0.000 win 0.61
+paired [M3ens_tuned - M3tuned, seed 0, all, 0.25 s] median diff -0.09 cm [-0.13, -0.05] p=0.001 win 0.59
+paired [M3ens_tuned - M3tuned, seed 1, all, 0.25 s] median diff -0.18 cm [-0.27, -0.09] p=0.000 win 0.59
+paired [M3ens_tuned - M3tuned, seed 2, all, 0.25 s] median diff -0.14 cm [-0.22, -0.07] p=0.000 win 0.61
+paired [M3ens_tuned - M2, seed 0, all, 0.25 s] median diff -0.19 cm [-0.29, -0.09] p=0.000 win 0.60
+paired [M3ens_tuned - M2, seed 1, all, 0.25 s] median diff -0.20 cm [-0.29, -0.10] p=0.000 win 0.60
+paired [M3ens_tuned - M2, seed 2, all, 0.25 s] median diff -0.19 cm [-0.29, -0.09] p=0.000 win 0.62
+paired [M2roll - M2, seed 0, all, 0.25 s] median diff -0.01 cm [-0.03, +0.01] p=0.229 win 0.56
+paired [M2roll - M2, seed 1, all, 0.25 s] median diff -0.01 cm [-0.03, +0.00] p=0.040 win 0.56
+paired [M2roll - M2, seed 2, all, 0.25 s] median diff -0.01 cm [-0.04, +0.01] p=0.085 win 0.53
+paired [M3 - P0b, seed 0, all, 0.25 s] median diff -0.74 cm [-0.90, -0.64] p=0.000 win 0.80
+paired [M3 - P0b, seed 1, all, 0.25 s] median diff -0.70 cm [-0.87, -0.60] p=0.000 win 0.80
+paired [M3 - P0b, seed 2, all, 0.25 s] median diff -0.71 cm [-0.87, -0.60] p=0.000 win 0.76
+paired [P0b - oracle, seed None, all, 0.25 s] median diff +1.08 cm [+0.95, +1.26] p=1.000 win 0.09
+paired [M1 - oracle, seed 0, all, 0.25 s] median diff +0.57 cm [+0.48, +0.68] p=1.000 win 0.16
+paired [M1 - oracle, seed 1, all, 0.25 s] median diff +0.61 cm [+0.48, +0.75] p=1.000 win 0.16
+paired [M1 - oracle, seed 2, all, 0.25 s] median diff +0.59 cm [+0.50, +0.68] p=1.000 win 0.16
+paired [M2 - oracle, seed 0, all, 0.25 s] median diff +0.48 cm [+0.40, +0.56] p=1.000 win 0.18
+paired [M2 - oracle, seed 1, all, 0.25 s] median diff +0.49 cm [+0.40, +0.56] p=1.000 win 0.18
+paired [M2 - oracle, seed 2, all, 0.25 s] median diff +0.48 cm [+0.40, +0.56] p=1.000 win 0.17
+paired [M3 - oracle, seed 0, all, 0.25 s] median diff +0.34 cm [+0.26, +0.39] p=1.000 win 0.17
+paired [M3 - oracle, seed 1, all, 0.25 s] median diff +0.38 cm [+0.30, +0.42] p=1.000 win 0.17
+paired [M3 - oracle, seed 2, all, 0.25 s] median diff +0.37 cm [+0.29, +0.44] p=1.000 win 0.18
+paired [M3tuned - oracle, seed 0, all, 0.25 s] median diff +0.38 cm [+0.29, +0.45] p=1.000 win 0.15
+paired [M3tuned - oracle, seed 1, all, 0.25 s] median diff +0.47 cm [+0.39, +0.55] p=1.000 win 0.16
+paired [M3tuned - oracle, seed 2, all, 0.25 s] median diff +0.43 cm [+0.37, +0.49] p=1.000 win 0.14
+paired [M3act - oracle, seed 0, all, 0.25 s] median diff +0.47 cm [+0.39, +0.54] p=1.000 win 0.16
+paired [M3act - oracle, seed 1, all, 0.25 s] median diff +0.48 cm [+0.39, +0.56] p=1.000 win 0.17
+paired [M3act - oracle, seed 2, all, 0.25 s] median diff +0.48 cm [+0.39, +0.57] p=1.000 win 0.19
+paired [M3act_tuned - oracle, seed 0, all, 0.25 s] median diff +0.51 cm [+0.42, +0.60] p=1.000 win 0.17
+paired [M3act_tuned - oracle, seed 1, all, 0.25 s] median diff +0.52 cm [+0.42, +0.60] p=1.000 win 0.19
+paired [M3act_tuned - oracle, seed 2, all, 0.25 s] median diff +0.52 cm [+0.43, +0.61] p=1.000 win 0.17
+paired [M3nll - oracle, seed 0, all, 0.25 s] median diff +0.30 cm [+0.21, +0.38] p=1.000 win 0.17
+paired [M3nll - oracle, seed 1, all, 0.25 s] median diff +0.30 cm [+0.20, +0.37] p=1.000 win 0.17
+paired [M3nll - oracle, seed 2, all, 0.25 s] median diff +0.30 cm [+0.20, +0.38] p=1.000 win 0.18
+paired [M3nll_tuned - oracle, seed 0, all, 0.25 s] median diff +0.29 cm [+0.20, +0.37] p=1.000 win 0.19
+paired [M3nll_tuned - oracle, seed 1, all, 0.25 s] median diff +0.31 cm [+0.20, +0.38] p=1.000 win 0.18
+paired [M3nll_tuned - oracle, seed 2, all, 0.25 s] median diff +0.31 cm [+0.21, +0.40] p=1.000 win 0.17
+paired [M4 - oracle, seed 0, all, 0.25 s] median diff +0.36 cm [+0.29, +0.41] p=1.000 win 0.19
+paired [M4 - oracle, seed 1, all, 0.25 s] median diff +0.38 cm [+0.30, +0.43] p=1.000 win 0.18
+paired [M4 - oracle, seed 2, all, 0.25 s] median diff +0.56 cm [+0.48, +0.61] p=1.000 win 0.13
+paired [M2roll - oracle, seed 0, all, 0.25 s] median diff +0.47 cm [+0.39, +0.56] p=1.000 win 0.21
+paired [M2roll - oracle, seed 1, all, 0.25 s] median diff +0.48 cm [+0.38, +0.55] p=1.000 win 0.21
+paired [M2roll - oracle, seed 2, all, 0.25 s] median diff +0.47 cm [+0.37, +0.54] p=1.000 win 0.21
+paired [M3ens - oracle, seed None, all, 0.25 s] median diff +0.29 cm [+0.19, +0.36] p=1.000 win 0.17
+paired [M3ens_tuned - oracle, seed None, all, 0.25 s] median diff +0.29 cm [+0.19, +0.37] p=1.000 win 0.19
+seeds           M1: median pos err 0.25 s 0.94 ± 0.02 cm (n=3)
+seeds           M2: median pos err 0.25 s 0.84 ± 0.00 cm (n=3)
+seeds           M3: median pos err 0.25 s 0.71 ± 0.02 cm (n=3)
+seeds      M3tuned: median pos err 0.25 s 0.78 ± 0.04 cm (n=3)
+seeds        M3act: median pos err 0.25 s 0.83 ± 0.00 cm (n=3)
+seeds  M3act_tuned: median pos err 0.25 s 0.87 ± 0.00 cm (n=3)
+seeds        M3nll: median pos err 0.25 s 0.66 ± 0.00 cm (n=3)
+seeds  M3nll_tuned: median pos err 0.25 s 0.66 ± 0.01 cm (n=3)
+seeds           M4: median pos err 0.25 s 0.78 ± 0.11 cm (n=3)
+seeds       M2roll: median pos err 0.25 s 0.83 ± 0.00 cm (n=3)
+wrote results/rollout_horizons_val_final.json and results/rollout_horizons_val_final_errors.npz (335 s)

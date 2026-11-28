@@ -6,6 +6,7 @@ Complements scripts/eval_rollout.py (stride-200 starts, 0.1 / 0.25 s, RMS; both 
     python scripts/eval_rollout_horizons.py                                  # default model list (below)
     python scripts/eval_rollout_horizons.py --runs m2_hybrid_mlp_tuned_seed0 --no-ensembles --n-starts 50   # quick
     python scripts/eval_rollout_horizons.py --mode full --out results/rollout_horizons_val_full.json
+    python scripts/eval_rollout_horizons.py --final        # models, labels and pairs from configs/final_models.yaml
     -> results/rollout_horizons_val.json         summaries, per-flight medians, seed summary, paired diffs
     -> results/rollout_horizons_val_errors.npz   per-start position / velocity errors (for figures)
 
@@ -24,7 +25,10 @@ Protocol
   - Reference rows: "oracle" (recorded F and M: integrator + filter floor) and P0b.
   - Paired diffs (a - b, seed-matched like scripts/eval_models.py): difference of medians with a
     paired flight bootstrap (same flights, same starts), p = share of resamples with a not better,
-    and win = share of start points where a has the smaller error.
+    and win = share of start points where a has the smaller error. With --final, every model is also
+    paired against the oracle: "excess over the floor" (the error the recorded forces themselves give).
+  - Failure policy (src/eval/rollout_stats.py): an error that is non-finite or > 10 m counts as diverged
+    and is set to 10 m in every statistic; counts are reported (n_diverged).
 Validation only (test data never loaded). Model inputs and checkpoints as in eval_models.py.
 """
 from __future__ import annotations
@@ -44,6 +48,8 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.data.dataset import frame_pieces, part_filter, read_splits, segment_ids  # noqa: E402
 from src.data.load import REPO, load_all  # noqa: E402
+from src.eval.registry import load_registry  # noqa: E402
+from src.eval.rollout_stats import DIVERGED_M, paired_diff, summarise_errors  # noqa: E402
 from src.models import build_model  # noqa: E402
 from src.sim import rollout as R  # noqa: E402
 from src.sim.pool import EpisodePool  # noqa: E402
@@ -64,8 +70,10 @@ LABEL = {"m1_mlp": "M1", "m1_mlp_tuned": "M1", "m2_hybrid_mlp": "M2", "m2_hybrid
          "m3_hybrid_tcn_act": "M3act_default", "m4_hybrid_transformer": "M4", "m2_hybrid_mlp_rollft": "M2roll",
          "m3_ens": "M3nll", "m3_ens_tuned": "M3nll_tuned"}
 # a - b; negative = a better
-PAIRS = [("M2", "M1"), ("M2", "P0b"), ("M3", "M2"), ("M3tuned", "M2"), ("M3act", "M2"), ("M3act", "M3"),
-         ("M3act_default", "M2"), ("M3act_default", "M3"), ("M4", "M3"), ("M3ens", "M3"), ("M3ens", "M2"), ("M2roll", "M2"), ("M3", "P0b")]
+# (without --final; labels as in LABEL above: M3act = tuned actuator-only, M3act_default = default config)
+PAIRS = [("M2", "M1"), ("M2", "P0b"), ("M3", "M2"), ("M3tuned", "M2"), ("M3act", "M2"), ("M3act", "M3tuned"),
+         ("M3act_default", "M2"), ("M3act_default", "M3"), ("M4", "M3"), ("M3ens", "M3"), ("M3ens", "M2"),
+         ("M3ens_tuned", "M3tuned"), ("M3ens_tuned", "M2"), ("M2roll", "M2"), ("M3", "P0b")]
 SUBSETS = {"all": (-np.inf, np.inf), "le5": (-np.inf, 5.0), "gt5": (5.0, np.inf)}
 
 
@@ -120,40 +128,23 @@ class _Oracle:
 
 
 # ---------------------------------------------------------------- statistics
-def _flight_index(flights: np.ndarray):
+def summarize(err: np.ndarray, flights: np.ndarray) -> dict:
+    """err (n,) for one horizon and subset. Shared failure policy (src/eval/rollout_stats.py): an error
+    that is non-finite or > 10 m counts as diverged and is set to 10 m in every statistic. The flight
+    bootstrap resamples only the flights present in this subset."""
+    s = summarise_errors(err, flights)
     fl = np.unique(flights)
-    return fl, [np.where(flights == f)[0] for f in fl]
+    e = np.where(np.isfinite(err) & (err <= DIVERGED_M), err, DIVERGED_M)
+    return {"n": s["n"], "n_nonfinite": int((~np.isfinite(err)).sum()), "n_diverged": s["n_diverged"],
+            "median": s["median"], "p25": s["p25"], "p75": s["p75"], "iqr": s["p75"] - s["p25"],
+            "mean": s["mean"], "p90": s["p90"], "rms": s["rms"], "median_ci95": s["median_ci95"],
+            "per_flight_median": {str(f): float(np.median(e[flights == f])) for f in fl}}
 
 
-def _boot_idx(n_flights: int, b: int, seed: int = 0) -> np.ndarray:
-    return np.random.default_rng(seed).integers(0, n_flights, size=(b, n_flights))
-
-
-def summarize(err: np.ndarray, flights: np.ndarray, boot: np.ndarray) -> dict:
-    """err (n,) for one horizon."""
-    fl, groups = _flight_index(flights)
-    finite = np.isfinite(err)
-    e = np.where(finite, err, np.inf)                           # a diverged rollout counts as worst
-    reps = np.array([np.median(e[np.concatenate([groups[k] for k in row])]) for row in boot])
-    return {"n": int(len(e)), "n_nonfinite": int((~finite).sum()),
-            "median": float(np.median(e)), "p25": float(np.percentile(e, 25)), "p75": float(np.percentile(e, 75)),
-            "iqr": float(np.percentile(e, 75) - np.percentile(e, 25)),
-            "mean": float(np.mean(err[finite])) if finite.any() else None, "p90": float(np.percentile(e, 90)),
-            "median_ci95": [float(x) for x in np.percentile(reps, [2.5, 97.5])],
-            "per_flight_median": {str(f): float(np.median(e[g])) for f, g in zip(fl, groups)}}
-
-
-def paired_median_diff(a: np.ndarray, b: np.ndarray, flights: np.ndarray, boot: np.ndarray) -> dict:
-    a = np.where(np.isfinite(a), a, np.inf); b = np.where(np.isfinite(b), b, np.inf)
-    _, groups = _flight_index(flights)
-    d0 = float(np.median(a) - np.median(b))
-    reps = []
-    for row in boot:
-        ix = np.concatenate([groups[k] for k in row])
-        reps.append(np.median(a[ix]) - np.median(b[ix]))
-    reps = np.array(reps)
-    return {"diff_median": d0, "ci95": [float(x) for x in np.percentile(reps, [2.5, 97.5])],
-            "p": float((reps >= 0).mean()), "win_rate_a": float((a < b).mean())}
+def paired_median_diff(a: np.ndarray, b: np.ndarray, flights: np.ndarray) -> dict:
+    d = paired_diff(a, b, flights, stat="median")
+    return {"diff_median": d["diff"], "ci95": d["ci95"], "p": d["p"], "win_rate_a": d["win_rate_a"],
+            "n_diverged_a": d["n_diverged_a"], "n_diverged_b": d["n_diverged_b"]}
 
 
 # ---------------------------------------------------------------- main
@@ -172,15 +163,23 @@ def main(argv=None):
     ap.add_argument("--split", default="A")
     ap.add_argument("--out", default="results/rollout_horizons_val.json")
     ap.add_argument("--errors-out", default="results/rollout_horizons_val_errors.npz")
+    ap.add_argument("--final", action="store_true",
+                    help="models, labels and pairs from configs/final_models.yaml (overrides --runs / --ensemble)")
+    ap.add_argument("--registry", default=None, help="registry file (default configs/final_models.yaml)")
     a = ap.parse_args(argv)
+    reg = (load_registry(a.registry) if a.registry else load_registry()) if a.final else None
     t0 = time.time()
     device = pick_device(a.device)
     steps = [int(round(h / R.DT)) for h in a.horizons]
     n_max = max(steps)
 
     runs = a.runs if a.runs is not None else DEFAULT_RUNS
+    if reg is not None:
+        runs = reg.runs(a.split)
     if a.no_ensembles:
         ensembles = {}
+    elif reg is not None:
+        ensembles = reg.ensemble_members(a.split)
     elif a.ensemble is not None:
         ensembles = {k: v.split(",") for k, v in (e.split("=", 1) for e in a.ensemble)}
     else:
@@ -229,19 +228,24 @@ def main(argv=None):
     for run in runs:
         m, cfg = load_run(run, device)
         base = re.sub(r"_seed\d+$", "", cfg.get("name", run))
-        if cfg["data"]["split"] != a.split:
+        if reg is not None:
+            reg.check_checkpoint(run, cfg, a.split)        # provenance: split, config name, seed
+        elif cfg["data"]["split"] != a.split:
             print(f"skip {run}: trained on split {cfg['data']['split']}")
             continue
-        add(run, LABEL.get(base, base), int(cfg.get("seed", 0)), R.ModelForce(m),
-            {"config_name": cfg.get("name")})
+        label = reg.label_of(run) if reg is not None else LABEL.get(base, base)
+        add(run, label, int(cfg.get("seed", 0)), R.ModelForce(m), {"config_name": cfg.get("name")})
     for label, mem in ensembles.items():
-        models = [load_run(r, device)[0] for r in mem]
-        add(label, label, None, R.ModelForce(MeanOf(models)), {"members": mem})
+        loaded = [load_run(r, device) for r in mem]
+        for r, (_, cfg) in zip(mem, loaded):              # every member is checked, not only single runs
+            if reg is not None:
+                reg.check_checkpoint(r, cfg, a.split)
+            elif cfg["data"]["split"] != a.split:
+                raise ValueError(f"ensemble {label}: member {r} trained on split {cfg['data']['split']}")
+        add(label, label, None, R.ModelForce(MeanOf([m for m, _ in loaded])), {"members": mem})
 
     # ---- statistics
-    boot = _boot_idx(len(np.unique(flights)), 2000, seed=0)
     masks = {k: (speed0 > lo) & (speed0 <= hi) for k, (lo, hi) in SUBSETS.items()}
-    boots = {k: _boot_idx(len(np.unique(flights[m])), 2000, seed=0) for k, m in masks.items() if m.any()}
     out = {"source": "scripts/eval_rollout_horizons.py", "git_hash": git_hash(), "splits_sha256": splits["meta"]["sha256"],
            "split": a.split, "part": "val", "mode": a.mode, "integrator": a.integrator, "dt_s": R.DT,
            "horizons_s": a.horizons, "horizon_steps": steps, "n_starts_per_flight_target": a.n_starts,
@@ -249,6 +253,8 @@ def main(argv=None):
            "n_gt5": int(masks["gt5"].sum()), "device": str(device), "missing": missing,
            "definition": "pos error = |p_sim - p_true| [m]; vel error = world-frame |v_sim - v_true| [m/s]; "
                          "median / IQR over start points; CI = flight bootstrap 2000 of the pooled median",
+           "failure_policy": f"non-finite or > {DIVERGED_M:g} m = diverged, set to {DIVERGED_M:g} m in every statistic",
+           "registry": reg.info() if reg is not None else None,
            "models": {}, "paired": [], "seed_summary": {}}
     for name, e in entries.items():
         res = {"label": e["label"], "seed": e["seed"], "secs": round(e["secs"], 1),
@@ -257,10 +263,10 @@ def main(argv=None):
         for sub, msk in masks.items():
             if not msk.any():
                 continue
-            res["pos_err_m"][sub] = {f"{h:g}": summarize(e["pos"][msk, j], flights[msk], boots[sub])
+            res["pos_err_m"][sub] = {f"{h:g}": summarize(e["pos"][msk, j], flights[msk])
                                      for j, h in enumerate(a.horizons)}
-            res["vel_err_mps"][sub] = {f"{h:g}": {k: v for k, v in summarize(e["vel"][msk, j], flights[msk], boots[sub]).items()
-                                                  if k in ("median", "p25", "p75", "iqr", "mean", "n_nonfinite")}
+            res["vel_err_mps"][sub] = {f"{h:g}": {k: v for k, v in summarize(e["vel"][msk, j], flights[msk]).items()
+                                                  if k in ("median", "p25", "p75", "iqr", "mean", "n_nonfinite", "n_diverged")}
                                        for j, h in enumerate(a.horizons)}
         out["models"][name] = res
 
@@ -268,7 +274,13 @@ def main(argv=None):
     by_label = defaultdict(dict)
     for name, e in entries.items():
         by_label[e["label"]][e["seed"]] = name
-    for la, lb in PAIRS:
+    pairs = list(PAIRS)
+    if reg is not None:
+        pairs = [tuple(p) for p in reg.pairs_rollout]
+        if not a.no_baselines:                            # excess over the oracle floor, every model
+            pairs += [(lab, "oracle") for lab in dict.fromkeys(["P0b"] + [entries[n]["label"] for n in entries])
+                      if lab != "oracle"]
+    for la, lb in pairs:
         if la not in by_label or lb not in by_label:
             continue
         seeds = sorted({s for s in list(by_label[la]) + list(by_label[lb]) if s is not None}) or [None]
@@ -280,7 +292,7 @@ def main(argv=None):
                 if not msk.any():
                     continue
                 for j, h in enumerate(a.horizons):
-                    d = paired_median_diff(entries[na]["pos"][msk, j], entries[nb]["pos"][msk, j], flights[msk], boots[sub])
+                    d = paired_median_diff(entries[na]["pos"][msk, j], entries[nb]["pos"][msk, j], flights[msk])
                     out["paired"].append({"a": la, "b": lb, "a_run": na, "b_run": nb, "seed": s, "subset": sub,
                                           "horizon_s": h, **d})
                     if sub == "all" and h == 0.25:

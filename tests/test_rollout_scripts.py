@@ -108,7 +108,7 @@ def fake_repo(tmp_path, monkeypatch):
                "train": {"weight_decay": 0.1, "eval_batch_size": 4096}}
         (tmp_path / "checkpoints" / run).mkdir(parents=True)
         torch.save({"model": m.state_dict(), "config": cfg}, tmp_path / "checkpoints" / run / "best.pt")
-    mods = {n: _load(n) for n in ("eval_rollout_horizons", "finetune_rollout")}
+    mods = {n: _load(n) for n in ("eval_rollout_horizons", "finetune_rollout", "eval_rollout", "eval_models")}
     for mod in mods.values():
         monkeypatch.setattr(mod, "REPO", tmp_path)
         monkeypatch.setattr(mod, "load_all", lambda: df)
@@ -154,3 +154,83 @@ def test_finetune_rollout_smoke(fake_repo):
     out = json.loads((root / "results" / "rollout_horizons_val.json").read_text())
     assert out["models"]["m2_hybrid_mlp_rollft_seed0"]["label"] == "M2roll"
     assert any(d["a"] == "M2roll" and d["b"] == "M2" for d in out["paired"])
+
+
+# ---------------------------------------------------------------- final-model registry (review fix, Nov 28)
+REG = """
+models:
+  M2: {split: A, runs: [m2_hybrid_mlp_tuned_seed0]}
+  M3: {split: A, runs: [m3_hybrid_tcn_seed0]}
+ensembles:
+  M3ens: {split: A, members: [m3_hybrid_tcn_seed0]}
+headline: {A: [M2, M3]}
+pairs_1step: {A: [[M3, M2, A_val, all]]}
+pairs_rollout: [[M3, M2], [M3ens, M2]]
+rollout_reference: M2
+"""
+
+
+def test_horizons_final_uses_registry_labels_and_oracle_pairs(fake_repo):
+    root, mods = fake_repo
+    (root / "reg.yaml").write_text(REG)
+    mods["eval_rollout_horizons"].main(["--final", "--registry", str(root / "reg.yaml"), "--n-starts", "40",
+                                        "--device", "cpu", "--batch", "50"])
+    out = json.loads((root / "results" / "rollout_horizons_val.json").read_text())
+    assert out["registry"]["labels"]["M3"] == ["m3_hybrid_tcn_seed0"]
+    assert {m["label"] for m in out["models"].values()} == {"oracle", "P0b", "M2", "M3", "M3ens"}
+    pairs = {(d["a"], d["b"], d["a_run"], d["b_run"]) for d in out["paired"] if d["subset"] == "all" and d["horizon_s"] == 0.25}
+    assert ("M3", "M2", "m3_hybrid_tcn_seed0", "m2_hybrid_mlp_tuned_seed0") in pairs
+    assert {(a, b) for a, b, _, _ in pairs} >= {("M2", "oracle"), ("M3", "oracle"), ("M3ens", "oracle"), ("P0b", "oracle")}
+    ex = next(d for d in out["paired"] if d["a"] == "M3" and d["b"] == "oracle" and d["subset"] == "all")
+    assert ex["diff_median"] > 0 and ex["n_diverged_a"] == 0      # nothing beats the recorded forces
+    assert "failure_policy" in out
+
+
+def test_eval_rollout_final_and_failure_policy(fake_repo):
+    root, mods = fake_repo
+    (root / "reg.yaml").write_text(REG)
+    mods["eval_rollout"].main(["--final", "--registry", str(root / "reg.yaml"), "--stride", "100", "--steps", "40",
+                               "--modes", "translational", "--integrators", "rk4", "--device", "cpu",
+                               "--out", "results/val_rollout_final.json"])
+    out = json.loads((root / "results" / "val_rollout_final.json").read_text())
+    assert set(out["models"]) == {"oracle", "P0b", "M2", "M3", "M3ens"}
+    s = out["models"]["M3"]["translational/rk4"]["per_seed"][0]["horizons"]["0.1s"]["pos"]
+    assert s["all"]["n_diverged"] == 0 and s["all"]["n_flights"] == 2
+    refs = {(d["a"], d["b"]) for d in out["paired_pos_rmse_final"]}
+    assert ("M3", "M2") in refs and ("M3", "oracle") in refs and ("M2", "oracle") in refs
+    assert all(np.isfinite(d["diff_rms_m"]) for d in out["paired_pos_rmse_final"])
+
+
+def test_final_refuses_checkpoint_from_another_split(fake_repo):
+    root, mods = fake_repo
+    ck = root / "checkpoints" / "m3_hybrid_tcn_seed0" / "best.pt"
+    d = torch.load(ck, weights_only=False); d["config"]["data"]["split"] = "A_r1"; torch.save(d, ck)
+    (root / "reg.yaml").write_text(REG)
+    with pytest.raises(ValueError, match="split A_r1"):
+        mods["eval_rollout_horizons"].main(["--final", "--registry", str(root / "reg.yaml"), "--n-starts", "10",
+                                            "--device", "cpu", "--no-baselines"])
+    # without --final an ensemble member from another split is refused too (it used to be scored silently)
+    with pytest.raises(ValueError, match="member"):
+        mods["eval_rollout_horizons"].main(["--runs", "--ensemble", "E=m3_hybrid_tcn_seed0", "--n-starts", "10",
+                                            "--device", "cpu", "--no-baselines"])
+
+
+def test_eval_models_final_writes_run_names_and_refuses_label_clash(fake_repo):
+    root, mods = fake_repo
+    vb = json.loads((root / "results" / "val_baselines.json").read_text())
+    vb["metric_definition"] = "test"; vb["splits"]["A"]["eval"] = {}
+    (root / "results" / "val_baselines.json").write_text(json.dumps(vb))
+    (root / "results" / "runs.csv").write_text("run,val_rmse_F_N\n")
+    (root / "reg.yaml").write_text(REG)
+    em = mods["eval_models"]
+    em.main(["--final", "--registry", str(root / "reg.yaml"), "--device", "cpu",
+             "--out", "results/vm.json", "--out-unc", "results/vu.json"])
+    out = json.loads((root / "results" / "vm.json").read_text())
+    assert out["runs"]["m3_hybrid_tcn_seed0"]["label"] == "M3" and out["ensembles"]["M3ens"]["label"] == "M3ens"
+    p = next(d for d in out["paired"] if d["a"] == "M3" and d["b"] == "M2")
+    assert p["a_run"] == "m3_hybrid_tcn_seed0" and p["b_run"] == "m2_hybrid_mlp_tuned_seed0"
+    # two different checkpoints under one label and seed are refused (they used to overwrite each other)
+    (root / "reg2.yaml").write_text(REG.replace("M2: {split: A, runs: [m2_hybrid_mlp_tuned_seed0]}",
+                                                "M2: {split: A, runs: [m2_hybrid_mlp_tuned_seed0]}\n  M2b: {split: A, runs: [m3_hybrid_tcn_seed0]}"))
+    with pytest.raises(ValueError, match="listed under both"):
+        em.main(["--final", "--registry", str(root / "reg2.yaml"), "--device", "cpu", "--out", "results/vm2.json"])
