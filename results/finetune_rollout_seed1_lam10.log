@@ -1,0 +1,10 @@
+m2_hybrid_mlp_tuned_seed1 -> m2_hybrid_mlp_rollft_seed1 on mps; train starts 1282662, selection starts 900 (18 val flights, eval starts excluded)
+loss scales (initial model, 20-step Euler): s_p 0.098 cm, s_v 0.0380 m/s
+[m2_hybrid_mlp_rollft_seed1] ep  0  sel 0.25s median 0.859 cm [0.533, 1.462]  1-step F 0.4031 N M 0.01350 (vecnorm)  train_loss nan  secs 0
+[m2_hybrid_mlp_rollft_seed1] ep  1  sel 0.25s median 0.846 cm [0.520, 1.506]  1-step F 0.4633 N M 0.01359 (vecnorm)  train_loss 3.087  train_l_roll 1.403  train_l_1step 0.1684  secs 8.957
+   * new best
+[m2_hybrid_mlp_rollft_seed1] ep  2  sel 0.25s median 0.861 cm [0.519, 1.495]  1-step F 0.4755 N M 0.01359 (vecnorm)  train_loss 3.03  train_l_roll 1.318  train_l_1step 0.1712  secs 8.928
+[m2_hybrid_mlp_rollft_seed1] ep  3  sel 0.25s median 0.860 cm [0.527, 1.507]  1-step F 0.4907 N M 0.01356 (vecnorm)  train_loss 3.057  train_l_roll 1.325  train_l_1step 0.1732  secs 9.211
+[m2_hybrid_mlp_rollft_seed1] ep  4  sel 0.25s median 0.861 cm [0.525, 1.515]  1-step F 0.4962 N M 0.01361 (vecnorm)  train_loss 3.039  train_l_roll 1.306  train_l_1step 0.1733  secs 9.05
+[m2_hybrid_mlp_rollft_seed1] ep  5  sel 0.25s median 0.850 cm [0.523, 1.506]  1-step F 0.4954 N M 0.01362 (vecnorm)  train_loss 3.036  train_l_roll 1.288  train_l_1step 0.1748  secs 9.17
+[m2_hybrid_mlp_rollft_seed1] done: early_stop, best epoch 1 (sel median 0.846 cm vs epoch 0 0.859 cm), 52 s -> results/finetune_rollout_seed1.json, runs.csv
