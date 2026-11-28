@@ -1,0 +1,17 @@
+m2_hybrid_mlp_tuned_seed0 -> m2_hybrid_mlp_rollft_seed0 on mps; train starts 1282662, selection starts 900 (18 val flights, eval starts excluded)
+loss scales (initial model, 20-step Euler): s_p 0.082 cm, s_v 0.0334 m/s
+Traceback (most recent call last):
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/finetune_rollout.py", line 248, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/finetune_rollout.py", line 170, in main
+    hist = [epoch_eval(0, {"train_loss": float("nan"), "secs": 0.0})]
+            ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/finetune_rollout.py", line 160, in epoch_eval
+    r = val_rollout_median(model, va_pool, va_sel, sel_steps, a.mode, device)
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/.venv/lib/python3.14/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/finetune_rollout.py", line 77, in val_rollout_median
+    errs.append(o["pos_err"][:, -1].double().cpu().numpy())
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+TypeError: Cannot convert a MPS Tensor to float64 dtype as the MPS framework doesn't support float64. Please use float32 instead.

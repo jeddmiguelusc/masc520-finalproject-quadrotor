@@ -74,7 +74,7 @@ def val_rollout_median(model, pool, sel, n_steps, mode, device, batch=2048) -> d
     for a in range(0, len(sel), batch):
         ep = pool.episodes(sel[a:a + batch], n_steps, device=device)
         o = R.rollout(R.ModelForce(model), ep, n_steps, "rk4", mode)
-        errs.append(o["pos_err"][:, -1].double().cpu().numpy())
+        errs.append(o["pos_err"][:, -1].cpu().double().numpy())
     e = np.concatenate(errs)
     e = np.where(np.isfinite(e), e, np.inf)
     return {"median": float(np.median(e)), "p25": float(np.percentile(e, 25)), "p75": float(np.percentile(e, 75)),

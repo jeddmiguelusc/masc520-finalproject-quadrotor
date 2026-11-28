@@ -107,8 +107,8 @@ def run_rollouts(force_fn, pool: EpisodePool, sel: np.ndarray, horizons: list[in
         ep = pool.episodes(sel[a:a + batch], n, device=device)
         f = force_fn(ep) if callable(force_fn) and getattr(force_fn, "needs_episode", False) else force_fn
         o = R.rollout(f, ep, n, integrator, mode)
-        pe.append(o["pos_err"][:, horizons].double().cpu().numpy())
-        ve.append(o["vel_err"][:, horizons].double().cpu().numpy())
+        pe.append(o["pos_err"][:, horizons].cpu().double().numpy())
+        ve.append(o["vel_err"][:, horizons].cpu().double().numpy())
     return {"pos": np.concatenate(pe), "vel": np.concatenate(ve)}
 
 

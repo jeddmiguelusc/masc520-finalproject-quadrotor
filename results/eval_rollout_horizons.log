@@ -1,0 +1,19 @@
+skip (no checkpoint): m2_hybrid_mlp_rollft_seed0
+skip (no checkpoint): m2_hybrid_mlp_rollft_seed1
+skip (no checkpoint): m2_hybrid_mlp_rollft_seed2
+A/val: 18 flights, 327432 valid starts for 200 steps; selected 3600 (200-200 per flight); |v0|>5: 1446; device mps; translational, rk4
+Traceback (most recent call last):
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/eval_rollout_horizons.py", line 315, in <module>
+    main()
+    ~~~~^^
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/eval_rollout_horizons.py", line 226, in main
+    add("oracle", "oracle", None, _Oracle())
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/eval_rollout_horizons.py", line 219, in add
+    e = run_rollouts(force, pool, sel, steps, a.mode, a.integrator, device, a.batch)
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/.venv/lib/python3.14/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+  File "/Users/jeddmiguel/Desktop/masc520-finalproject-quadrotor/scripts/eval_rollout_horizons.py", line 110, in run_rollouts
+    pe.append(o["pos_err"][:, horizons].double().cpu().numpy())
+              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+TypeError: Cannot convert a MPS Tensor to float64 dtype as the MPS framework doesn't support float64. Please use float32 instead.
