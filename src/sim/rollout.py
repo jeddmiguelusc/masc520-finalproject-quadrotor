@@ -186,10 +186,16 @@ def _row(v, w, q, act):
 
 
 def rollout(force, ep: Episodes, n_steps: int | None = None, integrator: str = "rk4",
-            mode: str = "full", v0=None, w0=None) -> dict:
+            mode: str = "full", v0=None, w0=None, detach_every: int | None = None) -> dict:
     """Simulate n_steps steps from sample ep.H. Returns simulated and recorded trajectories
     (B, n_steps+1, ...) plus per-step errors. v0 / w0 override the initial body velocity / rates
-    (e.g. a tensor with requires_grad for sensitivity checks)."""
+    (e.g. a tensor with requires_grad for sensitivity checks).
+
+    detach_every = k (truncated BPTT): after every k steps the simulated state (and the simulated
+    rows of the model's input history) is detached, so gradients flow back at most k steps through
+    the dynamics. The forward values are unchanged. None (default) = full backpropagation."""
+    if detach_every is not None and int(detach_every) < 1:
+        raise ValueError("detach_every must be >= 1 or None")
     if integrator not in ("rk4", "euler"):
         raise ValueError(integrator)
     if mode not in ("translational", "full"):
@@ -253,6 +259,9 @@ def rollout(force, ep: Episodes, n_steps: int | None = None, integrator: str = "
                 w = w + dt / 6 * (k1[3] + 2 * k2[3] + 2 * k3[3] + k4[3])
             p = p + dt / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])
             v = v + dt / 6 * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1])
+        if detach_every is not None and (k - H + 1) % int(detach_every) == 0:
+            p, v, q, w = p.detach(), v.detach(), q.detach(), w.detach()
+            hist = [h.detach() for h in hist]
         hist.append(_row(v, w, q, act[:, k + 1]))
         P.append(p); Vs.append(v); Q.append(q); Ws.append(w)
 

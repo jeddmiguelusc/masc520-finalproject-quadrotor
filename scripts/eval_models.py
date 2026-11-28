@@ -46,7 +46,8 @@ DEFAULT_ENSEMBLES = {"m3_ens": [f"m3_ens_seed{s}" for s in range(3)],
 EVAL_SETS = {"A": [("A", "val")], "B_s": [("B_s", "val"), ("A", "val")]}
 LABEL = {"m1_mlp": "M1", "m2_hybrid_mlp": "M2", "m3_hybrid_tcn": "M3", "m4_hybrid_transformer": "M4",
          "m1_mlp_Bs": "M1", "m2_hybrid_mlp_Bs": "M2", "m3_hybrid_tcn_Bs": "M3",
-         "m3_ens": "M3nll", "m3_ens_Bs": "M3nll", "m3_hybrid_tcn_act": "M3act", "m3_hybrid_tcn_act_Bs": "M3act"}
+         "m3_ens": "M3nll", "m3_ens_Bs": "M3nll", "m3_hybrid_tcn_act": "M3act", "m3_hybrid_tcn_act_Bs": "M3act",
+         "m2_hybrid_mlp_rollft": "M2roll"}
 # (split, eval set, a, b, subset): metric(a) - metric(b); negative = a better
 PAIRS = [("A", "A_val", "M2", "M1", "all"), ("A", "A_val", "M3", "M2", "all"), ("A", "A_val", "M1", "B1", "all"),
          ("A", "A_val", "M2", "P0b", "all"), ("A", "A_val", "M3", "B1", "all"),
@@ -54,7 +55,7 @@ PAIRS = [("A", "A_val", "M2", "M1", "all"), ("A", "A_val", "M3", "M2", "all"), (
          ("A", "A_val", "M3", "B2", "all"), ("A", "A_val", "M3nll", "M3", "all"),
          ("A", "A_val", "M3ens", "M3", "all"), ("A", "A_val", "M3act", "M3", "all"),
          ("A", "A_val", "M3act", "M2", "all"), ("A", "A_val", "M3act", "B2", "all"),
-         ("A", "A_val", "M4", "M3", "all"), ("B_s", "A_val", "M3act", "M2", "gt5"),
+         ("A", "A_val", "M4", "M3", "all"), ("A", "A_val", "M2roll", "M2", "all"), ("B_s", "A_val", "M3act", "M2", "gt5"),
          ("B_s", "B_s_val", "M2", "M1", "all"),
          ("B_s", "A_val", "M2", "M1", "all"), ("B_s", "A_val", "M2", "M1", "gt5"),
          ("B_s", "A_val", "M2", "P0b", "gt5"), ("B_s", "A_val", "M1", "B1", "gt5"),
